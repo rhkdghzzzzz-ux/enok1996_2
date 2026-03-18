@@ -3,30 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>내 폰 MBTI | KT 맞춤 핸드폰 추천</title>
+  <title>내 폰 추천 테스트 | KT</title>
   <style>
-    /* ── Reset & Base ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --kt-red:    #E60012;
-      --kt-dark:   #1A1A2E;
-      --kt-gray:   #4A4A6A;
-      --kt-light:  #F5F5FA;
-      --kt-white:  #FFFFFF;
-      --kt-accent: #FF4D5E;
-      --radius:    14px;
-      --shadow:    0 8px 32px rgba(230, 0, 18, 0.12);
-      --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      --bg:        #FFFFFF;
+      --surface:   #F5F5F7;
+      --surface2:  #EBEBED;
+      --text:      #1D1D1F;
+      --muted:     #6E6E73;
+      --border:    #D2D2D7;
+      --accent:    #0066CC;
+      --radius:    16px;
+      --font:      -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
-      background: var(--kt-light);
-      color: var(--kt-dark);
-      line-height: 1.6;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -34,607 +32,846 @@
 
     /* ── Header ── */
     header {
-      background: var(--kt-white);
-      border-bottom: 1px solid rgba(230, 0, 18, 0.1);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
-    }
-
-    .header-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 24px;
-      height: 64px;
+      flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding: 0 24px;
+      height: 56px;
+      border-bottom: 1px solid var(--border);
     }
 
     .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
       text-decoration: none;
+      letter-spacing: -0.3px;
+    }
+    .logo span { color: var(--accent); }
+
+    nav { display: flex; gap: 4px; }
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      padding: 6px 10px;
+      border-radius: 8px;
+      transition: color 0.15s, background 0.15s;
+    }
+    nav a:hover { color: var(--text); background: var(--surface); }
+
+    /* ── Progress bar ── */
+    #progressWrap {
+      flex-shrink: 0;
+      height: 3px;
+      background: var(--surface2);
+      display: none;
+    }
+    #progressFill {
+      height: 100%;
+      background: var(--accent);
+      transition: width 0.35s ease;
     }
 
-    .logo-badge {
-      width: 36px;
-      height: 36px;
-      background: var(--kt-red);
-      border-radius: 10px;
-      display: flex;
+    /* ── Screens ── */
+    .screen { display: none; flex: 1; }
+    .screen.active { display: flex; flex-direction: column; }
+
+    /* ── Landing ── */
+    #screen-landing {
       align-items: center;
       justify-content: center;
-      font-size: 18px;
-    }
-
-    .logo-text {
-      font-size: 1.2rem;
-      font-weight: 800;
-      color: var(--kt-dark);
-      letter-spacing: -0.5px;
-    }
-
-    .logo-text span { color: var(--kt-red); }
-
-    nav { display: flex; align-items: center; gap: 8px; }
-
-    nav a {
-      text-decoration: none;
-      color: var(--kt-gray);
-      font-size: 0.9rem;
-      font-weight: 500;
-      padding: 8px 14px;
-      border-radius: 8px;
-      transition: background var(--transition), color var(--transition);
-    }
-
-    nav a:hover {
-      background: rgba(230, 0, 18, 0.07);
-      color: var(--kt-red);
-    }
-
-    nav a.nav-cta {
-      background: var(--kt-red);
-      color: var(--kt-white);
-      font-weight: 700;
-    }
-
-    nav a.nav-cta:hover {
-      background: var(--kt-accent);
-      color: var(--kt-white);
-    }
-
-    /* ── Hamburger (mobile) ── */
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-      padding: 4px;
-      background: none;
-      border: none;
-    }
-
-    .hamburger span {
-      display: block;
-      width: 24px;
-      height: 2px;
-      background: var(--kt-dark);
-      border-radius: 2px;
-      transition: var(--transition);
-    }
-
-    /* ── Mobile Nav ── */
-    .mobile-nav {
-      display: none;
-      flex-direction: column;
-      background: var(--kt-white);
-      border-top: 1px solid rgba(0,0,0,0.07);
-      padding: 12px 24px 16px;
-      gap: 4px;
-    }
-
-    .mobile-nav.open { display: flex; }
-
-    .mobile-nav a {
-      text-decoration: none;
-      color: var(--kt-gray);
-      font-size: 0.95rem;
-      font-weight: 500;
-      padding: 10px 14px;
-      border-radius: 8px;
-      transition: background var(--transition), color var(--transition);
-    }
-
-    .mobile-nav a:hover, .mobile-nav a.nav-cta {
-      background: rgba(230, 0, 18, 0.07);
-      color: var(--kt-red);
-    }
-
-    .mobile-nav a.nav-cta {
-      background: var(--kt-red);
-      color: var(--kt-white);
+      padding: 48px 24px 64px;
       text-align: center;
-      font-weight: 700;
-      margin-top: 6px;
     }
 
-    /* ── Hero Section ── */
-    main { flex: 1; }
-
-    .hero {
-      position: relative;
-      overflow: hidden;
-      background: linear-gradient(135deg, var(--kt-dark) 0%, #2D1B3D 50%, #1A0A1E 100%);
-      padding: 96px 24px 80px;
-      text-align: center;
-      color: var(--kt-white);
+    .landing-icon {
+      width: 80px; height: 80px;
+      background: var(--surface);
+      border-radius: 24px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.4rem;
+      margin: 0 auto 28px;
     }
 
-    /* decorative blobs */
-    .hero::before {
-      content: '';
-      position: absolute;
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(230,0,18,0.25) 0%, transparent 70%);
-      top: -200px; right: -150px;
-      pointer-events: none;
-    }
-
-    .hero::after {
-      content: '';
-      position: absolute;
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(255,77,94,0.15) 0%, transparent 70%);
-      bottom: -100px; left: -100px;
-      pointer-events: none;
-    }
-
-    .hero-inner {
-      position: relative;
-      z-index: 1;
-      max-width: 720px;
-      margin: 0 auto;
-    }
-
-    .hero-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(230, 0, 18, 0.2);
-      border: 1px solid rgba(230, 0, 18, 0.4);
-      color: #FF8090;
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 6px 16px;
-      border-radius: 999px;
-      margin-bottom: 28px;
-    }
-
-    .hero-title {
-      font-size: clamp(2rem, 5vw, 3.2rem);
+    .landing-title {
+      font-size: clamp(1.9rem, 5vw, 2.8rem);
       font-weight: 900;
       line-height: 1.2;
-      letter-spacing: -1px;
-      margin-bottom: 20px;
+      letter-spacing: -1.5px;
+      margin-bottom: 14px;
     }
 
-    .hero-title em {
-      font-style: normal;
-      color: var(--kt-red);
-      position: relative;
-    }
-
-    .hero-sub {
-      font-size: clamp(1rem, 2.5vw, 1.2rem);
-      color: rgba(255,255,255,0.75);
-      margin-bottom: 44px;
-      line-height: 1.7;
-    }
-
-    .btn-start {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: var(--kt-red);
-      color: var(--kt-white);
-      font-size: 1.1rem;
-      font-weight: 800;
-      padding: 18px 44px;
-      border: none;
-      border-radius: 999px;
-      cursor: pointer;
-      text-decoration: none;
-      box-shadow: 0 8px 32px rgba(230, 0, 18, 0.45);
-      transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
-      letter-spacing: -0.3px;
-    }
-
-    .btn-start:hover {
-      background: var(--kt-accent);
-      transform: translateY(-3px);
-      box-shadow: 0 14px 40px rgba(230, 0, 18, 0.55);
-    }
-
-    .btn-start:active { transform: translateY(0); }
-
-    .btn-start svg {
-      width: 20px; height: 20px;
-      transition: transform var(--transition);
-    }
-
-    .btn-start:hover svg { transform: translateX(4px); }
-
-    /* ── Stats Strip ── */
-    .stats-strip {
-      background: var(--kt-white);
-      border-bottom: 1px solid rgba(0,0,0,0.06);
-    }
-
-    .stats-inner {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 32px 24px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      text-align: center;
-    }
-
-    .stat-num {
-      font-size: 2rem;
-      font-weight: 900;
-      color: var(--kt-red);
-      letter-spacing: -1px;
-      line-height: 1;
-    }
-
-    .stat-label {
-      font-size: 0.85rem;
-      color: var(--kt-gray);
-      margin-top: 4px;
-    }
-
-    /* ── Features Section ── */
-    .features {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 80px 24px;
-    }
-
-    .section-title {
-      text-align: center;
-      font-size: clamp(1.5rem, 3vw, 2rem);
-      font-weight: 900;
-      letter-spacing: -0.5px;
-      margin-bottom: 48px;
-    }
-
-    .section-title span { color: var(--kt-red); }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
-    }
-
-    .card {
-      background: var(--kt-white);
-      border-radius: var(--radius);
-      padding: 36px 28px;
-      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
-      transition: transform var(--transition), box-shadow var(--transition);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 4px;
-      background: var(--kt-red);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform var(--transition);
-    }
-
-    .card:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
-    .card:hover::before { transform: scaleX(1); }
-
-    .card-icon {
-      width: 52px; height: 52px;
-      background: rgba(230, 0, 18, 0.08);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      margin-bottom: 20px;
-    }
-
-    .card h3 {
-      font-size: 1.1rem;
-      font-weight: 800;
-      margin-bottom: 10px;
-      letter-spacing: -0.3px;
-    }
-
-    .card p {
-      font-size: 0.9rem;
-      color: var(--kt-gray);
-      line-height: 1.65;
-    }
-
-    /* ── CTA Banner ── */
-    .cta-banner {
-      background: linear-gradient(135deg, var(--kt-red) 0%, #C5000F 100%);
-      padding: 72px 24px;
-      text-align: center;
-      color: var(--kt-white);
-    }
-
-    .cta-banner h2 {
-      font-size: clamp(1.5rem, 3vw, 2.2rem);
-      font-weight: 900;
-      letter-spacing: -0.5px;
-      margin-bottom: 12px;
-    }
-
-    .cta-banner p {
+    .landing-sub {
       font-size: 1rem;
-      opacity: 0.85;
-      margin-bottom: 36px;
+      color: var(--muted);
+      line-height: 1.65;
+      max-width: 360px;
+      margin: 0 auto 36px;
     }
 
-    .btn-outline {
+    .btn-primary {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: transparent;
-      color: var(--kt-white);
-      font-size: 1rem;
+      background: var(--text);
+      color: #fff;
+      font-size: 0.95rem;
       font-weight: 700;
-      padding: 15px 38px;
-      border: 2px solid rgba(255,255,255,0.8);
+      padding: 15px 36px;
+      border: none;
       border-radius: 999px;
       cursor: pointer;
-      text-decoration: none;
-      transition: background var(--transition), border-color var(--transition);
+      font-family: var(--font);
+      letter-spacing: -0.2px;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.82; transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+
+    .landing-meta {
+      margin-top: 16px;
+      font-size: 0.82rem;
+      color: var(--muted);
     }
 
-    .btn-outline:hover {
-      background: rgba(255,255,255,0.15);
-      border-color: var(--kt-white);
-    }
-
-    /* ── Footer ── */
-    footer {
-      background: var(--kt-dark);
-      color: rgba(255,255,255,0.5);
-      padding: 40px 24px;
-    }
-
-    .footer-inner {
-      max-width: 1100px;
-      margin: 0 auto;
+    .landing-features {
       display: flex;
+      gap: 8px;
+      justify-content: center;
       flex-wrap: wrap;
-      gap: 24px;
-      justify-content: space-between;
-      align-items: center;
+      margin-top: 40px;
     }
 
-    .footer-logo {
+    .feat-chip {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      background: var(--surface);
+      padding: 6px 14px;
+      border-radius: 999px;
+    }
+
+    /* ── Quiz ── */
+    #screen-quiz {
+      overflow-y: auto;
+    }
+
+    .quiz-inner {
+      width: 100%;
+      max-width: 580px;
+      margin: 0 auto;
+      padding: 36px 24px 80px;
+    }
+
+    .quiz-topbar {
       display: flex;
       align-items: center;
+      justify-content: space-between;
+      margin-bottom: 36px;
+    }
+
+    .btn-back {
+      background: none; border: none;
+      color: var(--muted);
+      font-size: 0.88rem;
+      font-family: var(--font);
+      cursor: pointer;
+      padding: 6px 0;
+      display: flex; align-items: center; gap: 4px;
+      transition: color 0.15s;
+    }
+    .btn-back:hover { color: var(--text); }
+
+    .q-counter {
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .q-emoji {
+      font-size: 2.2rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .q-text {
+      font-size: clamp(1.15rem, 3vw, 1.45rem);
+      font-weight: 800;
+      line-height: 1.35;
+      letter-spacing: -0.5px;
+      margin-bottom: 28px;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
       gap: 10px;
     }
 
-    .footer-logo .logo-badge {
-      width: 30px; height: 30px;
-      font-size: 14px;
-      opacity: 0.8;
+    .opt-btn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 18px;
+      background: var(--surface);
+      border: 2px solid transparent;
+      border-radius: var(--radius);
+      cursor: pointer;
+      text-align: left;
+      font-size: 0.93rem;
+      font-weight: 500;
+      color: var(--text);
+      font-family: var(--font);
+      width: 100%;
+      transition: border-color 0.15s, background 0.15s, transform 0.1s;
+    }
+    .opt-btn:hover {
+      border-color: var(--accent);
+      background: rgba(0, 102, 204, 0.05);
+    }
+    .opt-btn:active { transform: scale(0.99); }
+    .opt-btn.selected {
+      border-color: var(--accent);
+      background: rgba(0, 102, 204, 0.07);
+    }
+    .opt-emoji { font-size: 1.3rem; flex-shrink: 0; line-height: 1; }
+
+    /* ── Loading ── */
+    #screen-loading {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 24px;
     }
 
-    .footer-logo-text {
-      font-size: 1rem;
+    .spinner {
+      width: 44px; height: 44px;
+      border: 3px solid var(--surface2);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin: 0 auto 24px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .loading-sub { color: var(--muted); font-size: 0.88rem; }
+
+    /* ── Result ── */
+    #screen-result { overflow-y: auto; }
+
+    .result-inner {
+      width: 100%;
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    .result-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .result-header-icon {
+      font-size: 2.8rem;
+      margin-bottom: 14px;
+    }
+
+    .result-title {
+      font-size: clamp(1.3rem, 3.5vw, 1.9rem);
+      font-weight: 900;
+      letter-spacing: -1px;
+      margin-bottom: 6px;
+    }
+
+    .result-sub { color: var(--muted); font-size: 0.9rem; }
+
+    /* Phone cards */
+    .phone-cards { display: flex; flex-direction: column; gap: 14px; }
+
+    .phone-card {
+      border-radius: 20px;
+      padding: 24px;
+      position: relative;
+    }
+
+    .phone-card.rank-1 {
+      background: var(--text);
+      color: #fff;
+    }
+
+    .phone-card.rank-2, .phone-card.rank-3 {
+      background: var(--surface);
+      color: var(--text);
+    }
+
+    .rank-pill {
+      position: absolute;
+      top: 18px; right: 18px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    .rank-1 .rank-pill {
+      background: rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.85);
+    }
+
+    .rank-2 .rank-pill, .rank-3 .rank-pill {
+      background: rgba(0,0,0,0.07);
+      color: var(--muted);
+    }
+
+    .card-top {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .phone-icon { font-size: 2.2rem; flex-shrink: 0; }
+
+    .phone-name {
+      font-size: 1.1rem;
       font-weight: 800;
+      letter-spacing: -0.4px;
+      margin-bottom: 3px;
+    }
+
+    .phone-price {
+      font-size: 0.82rem;
+      font-weight: 500;
+    }
+
+    .rank-1 .phone-price { color: rgba(255,255,255,0.55); }
+    .rank-2 .phone-price, .rank-3 .phone-price { color: var(--muted); }
+
+    .match-row {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .match-track {
+      flex: 1; height: 5px;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .rank-1 .match-track { background: rgba(255,255,255,0.15); }
+    .rank-2 .match-track, .rank-3 .match-track { background: rgba(0,0,0,0.09); }
+
+    .match-fill {
+      height: 100%; border-radius: 999px;
+      transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .rank-1 .match-fill { background: #fff; }
+    .rank-2 .match-fill, .rank-3 .match-fill { background: var(--accent); }
+
+    .match-pct {
+      font-size: 0.82rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .rank-1 .match-pct { color: rgba(255,255,255,0.75); }
+    .rank-2 .match-pct, .rank-3 .match-pct { color: var(--muted); }
+
+    .phone-desc {
+      font-size: 0.88rem;
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+
+    .rank-1 .phone-desc { color: rgba(255,255,255,0.7); }
+    .rank-2 .phone-desc, .rank-3 .phone-desc { color: var(--muted); }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    .tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 11px;
+      border-radius: 999px;
+    }
+
+    .rank-1 .tag {
+      background: rgba(255,255,255,0.12);
       color: rgba(255,255,255,0.8);
     }
 
-    .footer-links {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
+    .rank-2 .tag, .rank-3 .tag {
+      background: rgba(0,0,0,0.06);
+      color: var(--muted);
     }
 
-    .footer-links a {
-      color: rgba(255,255,255,0.45);
-      text-decoration: none;
-      font-size: 0.82rem;
-      transition: color var(--transition);
-    }
-
-    .footer-links a:hover { color: rgba(255,255,255,0.85); }
-
-    .footer-copy {
-      width: 100%;
+    /* Retry */
+    .retry-wrap {
       text-align: center;
+      margin-top: 32px;
+    }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: none;
+      color: var(--text);
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 11px 26px;
+      border: 1.5px solid var(--border);
+      border-radius: 999px;
+      cursor: pointer;
+      font-family: var(--font);
+      transition: border-color 0.15s;
+    }
+    .btn-ghost:hover { border-color: var(--text); }
+
+    /* ── Footer ── */
+    footer {
+      flex-shrink: 0;
+      border-top: 1px solid var(--border);
+      padding: 18px 24px;
+      text-align: center;
+      color: var(--muted);
       font-size: 0.78rem;
-      margin-top: 24px;
-      padding-top: 24px;
-      border-top: 1px solid rgba(255,255,255,0.08);
     }
 
     /* ── Responsive ── */
-    @media (max-width: 768px) {
-      nav { display: none; }
-      .hamburger { display: flex; }
-
-      .hero { padding: 72px 20px 64px; }
-
-      .stats-inner { grid-template-columns: repeat(3, 1fr); gap: 12px; }
-      .stat-num { font-size: 1.5rem; }
-
-      .features { padding: 56px 20px; }
-
-      .footer-inner { flex-direction: column; text-align: center; }
-      .footer-links { justify-content: center; }
-    }
-
     @media (max-width: 480px) {
-      .stats-inner { grid-template-columns: 1fr; max-width: 240px; margin: 0 auto; }
-      .btn-start { padding: 16px 32px; font-size: 1rem; }
+      .quiz-inner, .result-inner { padding: 28px 16px 60px; }
+      .phone-card { padding: 18px; }
+      .landing-features { display: none; }
     }
   </style>
 </head>
 <body>
 
-<!-- ── HEADER ── -->
 <header>
-  <div class="header-inner">
-    <a href="#" class="logo">
-      <div class="logo-badge">📱</div>
-      <span class="logo-text">내 폰 <span>MBTI</span></span>
-    </a>
-
-    <nav>
-      <a href="#">테스트 소개</a>
-      <a href="#">추천 폰 보기</a>
-      <a href="#">KT 요금제</a>
-      <a href="#" class="nav-cta">테스트 시작</a>
-    </nav>
-
-    <button class="hamburger" onclick="toggleMenu()" aria-label="메뉴 열기">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-
-  <!-- Mobile Nav -->
-  <div class="mobile-nav" id="mobileNav">
-    <a href="#">테스트 소개</a>
-    <a href="#">추천 폰 보기</a>
+  <a href="#" class="logo" onclick="return goHome()">내 폰 추천<span>.</span></a>
+  <nav>
     <a href="#">KT 요금제</a>
-    <a href="#" class="nav-cta">테스트 시작하기</a>
-  </div>
+    <a href="#">고객센터</a>
+  </nav>
 </header>
 
-<!-- ── HERO ── -->
-<main>
-  <section class="hero">
-    <div class="hero-inner">
-      <div class="hero-tag">✨ KT 공식 추천 테스트</div>
-      <h1 class="hero-title">
-        나에게 꼭 맞는 <em>핸드폰</em>,<br>
-        몇 가지 질문으로 찾아보세요!
-      </h1>
-      <p class="hero-sub">
-        나의 라이프스타일과 사용 패턴을 분석해<br>
-        딱 맞는 스마트폰을 추천해 드려요.
-      </p>
-      <a href="#" class="btn-start">
-        테스트 시작하기
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M5 12h14M12 5l7 7-7 7"/>
-        </svg>
-      </a>
-    </div>
-  </section>
+<div id="progressWrap"><div id="progressFill" style="width:0%"></div></div>
 
-  <!-- ── STATS ── -->
-  <div class="stats-strip">
-    <div class="stats-inner">
-      <div class="stat-item">
-        <div class="stat-num">12</div>
-        <div class="stat-label">개의 질문</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">30+</div>
-        <div class="stat-label">추천 가능 기기</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">98%</div>
-        <div class="stat-label">만족도</div>
-      </div>
+<!-- ── LANDING ── -->
+<div class="screen active" id="screen-landing">
+  <div class="landing-icon">📱</div>
+  <h1 class="landing-title">나에게 딱 맞는<br>폰 찾기</h1>
+  <p class="landing-sub">
+    사용 패턴, 취향, 예산을 분석해<br>
+    최적의 스마트폰을 추천해드려요.
+  </p>
+  <button class="btn-primary" onclick="startQuiz()">
+    테스트 시작하기
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </button>
+  <p class="landing-meta">15개 질문 · 약 3분</p>
+  <div class="landing-features">
+    <span class="feat-chip">✦ 무료</span>
+    <span class="feat-chip">✦ 결과 즉시 확인</span>
+    <span class="feat-chip">✦ 7가지 폰 비교</span>
+  </div>
+</div>
+
+<!-- ── QUIZ ── -->
+<div class="screen" id="screen-quiz">
+  <div class="quiz-inner">
+    <div class="quiz-topbar">
+      <button class="btn-back" id="btnBack" onclick="prevQuestion()">
+        ← 이전
+      </button>
+      <span class="q-counter" id="qCounter">1 / 15</span>
+    </div>
+    <span class="q-emoji" id="qEmoji"></span>
+    <div class="q-text" id="qText"></div>
+    <div class="options" id="optContainer"></div>
+  </div>
+</div>
+
+<!-- ── LOADING ── -->
+<div class="screen" id="screen-loading">
+  <div class="spinner"></div>
+  <div class="loading-title">분석 중이에요...</div>
+  <div class="loading-sub">답변을 바탕으로 최적의 폰을 찾고 있어요</div>
+</div>
+
+<!-- ── RESULT ── -->
+<div class="screen" id="screen-result">
+  <div class="result-inner">
+    <div class="result-header">
+      <div class="result-header-icon">🎯</div>
+      <h2 class="result-title" id="resultTitle"></h2>
+      <p class="result-sub">답변 분석 완료 · 상위 3개 추천</p>
+    </div>
+    <div class="phone-cards" id="phoneCards"></div>
+    <div class="retry-wrap">
+      <button class="btn-ghost" onclick="restart()">↺ 다시 테스트하기</button>
     </div>
   </div>
+</div>
 
-  <!-- ── FEATURES ── -->
-  <section class="features">
-    <h2 class="section-title">왜 <span>내 폰 MBTI</span>일까요?</h2>
-    <div class="cards">
-      <div class="card">
-        <div class="card-icon">🎯</div>
-        <h3>정밀한 맞춤 분석</h3>
-        <p>사진, 게임, 업무 등 나의 핵심 사용 패턴을 분석해 진짜 필요한 스펙을 찾아드려요.</p>
-      </div>
-      <div class="card">
-        <div class="card-icon">⚡</div>
-        <h3>빠른 3분 테스트</h3>
-        <p>복잡한 스펙 비교는 NO. 간단한 질문 12개로 3분 안에 나만의 결과를 확인하세요.</p>
-      </div>
-      <div class="card">
-        <div class="card-icon">💰</div>
-        <h3>요금제까지 한번에</h3>
-        <p>추천 기기에 딱 맞는 KT 요금제와 혜택까지 함께 안내해 드려요.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── CTA BANNER ── -->
-  <section class="cta-banner">
-    <h2>지금 바로 나의 폰 MBTI를 확인해보세요!</h2>
-    <p>단 3분이면 충분해요. 스마트한 선택, KT와 함께.</p>
-    <a href="#" class="btn-outline">
-      테스트 시작하기
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M5 12h14M12 5l7 7-7 7"/>
-      </svg>
-    </a>
-  </section>
-</main>
-
-<!-- ── FOOTER ── -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-logo">
-      <div class="logo-badge">📱</div>
-      <span class="footer-logo-text">내 폰 MBTI</span>
-    </div>
-
-    <div class="footer-links">
-      <a href="#">이용약관</a>
-      <a href="#">개인정보처리방침</a>
-      <a href="#">고객센터</a>
-      <a href="#">KT 공식 사이트</a>
-    </div>
-
-    <div class="footer-copy">
-      © 2026 KT Corporation. All rights reserved. | 본 서비스는 KT닷컴 공식 추천 서비스입니다.
-    </div>
-  </div>
-</footer>
+<footer>© 2026 KT Corporation. All rights reserved.</footer>
 
 <script>
-  function toggleMenu() {
-    const nav = document.getElementById('mobileNav');
-    nav.classList.toggle('open');
-  }
+// ── PHONES ──────────────────────────────────────────────────────────────────
+const PHONES = [
+  {
+    id: 'iphone16promax',
+    name: 'iPhone 16 Pro Max',
+    emoji: '🍎',
+    price: '약 189만원~',
+    desc: '최강의 카메라 시스템과 A18 Pro 칩셋. 사진·영상 창작자와 Apple 생태계 헤비유저를 위한 최정상 선택.',
+    tags: ['최고급 카메라', '4K ProRes 영상', 'iOS', '6.9인치'],
+  },
+  {
+    id: 'iphone16',
+    name: 'iPhone 16',
+    emoji: '🍎',
+    price: '약 125만원~',
+    desc: '군더더기 없는 깔끔함에 카메라 컨트롤 버튼까지. 처음 아이폰이거나 심플함을 원하는 사람에게 딱.',
+    tags: ['밸런스', 'iOS', '카메라 버튼', '가볍고 슬림'],
+  },
+  {
+    id: 's25ultra',
+    name: 'Galaxy S25 Ultra',
+    emoji: '🔷',
+    price: '약 169만원~',
+    desc: 'S펜과 Snapdragon 8 Elite로 업무·멀티태스킹의 끝판왕. 대화면과 AI 기능이 필요한 파워유저에게.',
+    tags: ['S펜', '최고 성능', 'Galaxy AI', '6.9인치'],
+  },
+  {
+    id: 's25',
+    name: 'Galaxy S25',
+    emoji: '🔷',
+    price: '약 115만원~',
+    desc: '갤럭시 라인업의 스위트스팟. 최신 AI 기능과 날렵한 디자인, 가격의 균형이 완벽한 올라운더.',
+    tags: ['밸런스', 'Android', '가볍고 슬림', 'Galaxy AI'],
+  },
+  {
+    id: 'pixel9pro',
+    name: 'Google Pixel 9 Pro',
+    emoji: '🟢',
+    price: '약 149만원~',
+    desc: '구글 AI의 집약체. 매직 에디터와 베스트 테이크 등 사진 후보정이 독보적. 7년 OS 업데이트 보장.',
+    tags: ['AI 카메라', '순정 Android', '7년 업데이트', 'Magic Editor'],
+  },
+  {
+    id: 'a55',
+    name: 'Galaxy A55',
+    emoji: '💙',
+    price: '약 60만원~',
+    desc: '일상 사용에 충분한 성능과 카메라, IP67 방수까지. 가성비를 따진다면 이 선택이 가장 현명해요.',
+    tags: ['가성비', 'IP67 방수', '5000mAh 대용량', '이어폰잭'],
+  },
+  {
+    id: 'zflip6',
+    name: 'Galaxy Z Flip6',
+    emoji: '🦋',
+    price: '약 139만원~',
+    desc: '접으면 손바닥 크기, 펼치면 풀스크린. 남들과 다른 폼팩터로 개성을 표현하고 싶다면.',
+    tags: ['폴더블', '컴팩트', '개성', 'FlexMode 셀카'],
+  },
+];
 
-  // Close mobile menu on outside click
-  document.addEventListener('click', function(e) {
-    const nav = document.getElementById('mobileNav');
-    const btn = document.querySelector('.hamburger');
-    if (!nav.contains(e.target) && !btn.contains(e.target)) {
-      nav.classList.remove('open');
-    }
+// ── QUESTIONS ───────────────────────────────────────────────────────────────
+const QS = [
+  {
+    emoji: '🌅',
+    text: '오늘 하루 폰으로 가장 많이 한 것은?',
+    opts: [
+      { e: '🎬', t: '유튜브·넷플릭스 정주행',          s: { iphone16promax:2, s25ultra:2, s25:1 } },
+      { e: '📸', t: '사진·영상 찍기',                  s: { iphone16promax:3, pixel9pro:3, iphone16:1 } },
+      { e: '🎮', t: '모바일 게임 (진지하게)',            s: { s25ultra:4, s25:2, iphone16promax:1 } },
+      { e: '💬', t: '카톡·인스타·쇼핑',                 s: { iphone16:2, s25:2, a55:2, zflip6:1 } },
+    ],
+  },
+  {
+    emoji: '📷',
+    text: '카메라 앱을 열면 주로 뭘 찍나요?',
+    opts: [
+      { e: '🌄', t: '여행·풍경·일상 스냅',             s: { iphone16promax:2, pixel9pro:3, iphone16:1 } },
+      { e: '🤳', t: '셀카 위주 (전면 카메라 중요)',      s: { zflip6:3, iphone16:2, s25:1 } },
+      { e: '🌙', t: '야경·어두운 실내',                  s: { iphone16promax:3, pixel9pro:3, s25ultra:1 } },
+      { e: '🚫', t: '카메라 거의 안 씀',                 s: { a55:3, s25:1 } },
+    ],
+  },
+  {
+    emoji: '🔋',
+    text: '배터리가 10%일 때 나는?',
+    opts: [
+      { e: '😱', t: '공황 상태, 충전기 찾아 헤맴',       s: { a55:3, s25ultra:2, s25:1 } },
+      { e: '😅', t: '슬슬 충전해야지 하고 찾음',          s: { s25:2, iphone16:2, s25ultra:1 } },
+      { e: '😎', t: '0%까지 써도 별로 안 불편해',         s: { iphone16:2, iphone16promax:1 } },
+      { e: '🔌', t: '충전기를 항상 들고 다님',             s: { s25ultra:2, a55:1, pixel9pro:1 } },
+    ],
+  },
+  {
+    emoji: '📐',
+    text: '폰 화면 크기, 어떤 게 좋아요?',
+    opts: [
+      { e: '🖥️', t: '클수록 좋아, 거의 태블릿 수준',     s: { s25ultra:4, iphone16promax:2 } },
+      { e: '📱', t: '딱 적당한 6.1~6.5인치',              s: { iphone16:2, s25:2, pixel9pro:2 } },
+      { e: '✋', t: '한 손에 쏙, 작고 가벼워야 해',         s: { zflip6:4, iphone16:2 } },
+      { e: '🤷', t: '크기는 별로 안 중요해',               s: { a55:1, pixel9pro:1, s25:1 } },
+    ],
+  },
+  {
+    emoji: '💰',
+    text: '솔직한 예산은?',
+    opts: [
+      { e: '💎', t: '가격 상관없어, 최고로 줘',           s: { iphone16promax:4, s25ultra:4, pixel9pro:2 } },
+      { e: '💳', t: '100만원대까지는 OK',                  s: { iphone16promax:2, s25ultra:2, iphone16:2, s25:2, pixel9pro:2, zflip6:2 } },
+      { e: '🧾', t: '70~100만원 사이',                     s: { iphone16:2, s25:3, zflip6:1 } },
+      { e: '🏷️', t: '최대한 저렴하게',                    s: { a55:5 } },
+    ],
+  },
+  {
+    emoji: '🤳',
+    text: '현재 쓰는 폰 브랜드는?',
+    opts: [
+      { e: '🍎', t: '아이폰, 계속 아이폰 쓸 것 같아',     s: { iphone16promax:3, iphone16:3 } },
+      { e: '🔷', t: '갤럭시, 안드로이드가 편해',           s: { s25ultra:2, s25:2, a55:1, zflip6:1 } },
+      { e: '🟢', t: '다른 안드로이드',                      s: { pixel9pro:2, s25:1, a55:1 } },
+      { e: '🆕', t: '처음 사거나, 브랜드 바꿔볼까 해',     s: { iphone16:2, s25:2, pixel9pro:1 } },
+    ],
+  },
+  {
+    emoji: '🎮',
+    text: '폰으로 게임을 얼마나 해요?',
+    opts: [
+      { e: '🏆', t: '매일, 배그·롤 같은 무거운 게임도',   s: { s25ultra:4, iphone16promax:2 } },
+      { e: '🕹️', t: '가끔 캐주얼하게 즐김',               s: { s25:2, iphone16:2, pixel9pro:1 } },
+      { e: '📚', t: '거의 안 해',                           s: { a55:2, zflip6:1, pixel9pro:1 } },
+      { e: '🤦', t: '폰 게임은 별로, 콘솔·PC 파',          s: { iphone16:1, s25:1, a55:1 } },
+    ],
+  },
+  {
+    emoji: '✨',
+    text: 'SNS에 주로 어떤 걸 올려요?',
+    opts: [
+      { e: '🖼️', t: '사진 위주 (인스타 감성)',             s: { iphone16promax:2, pixel9pro:3, iphone16:1 } },
+      { e: '🎬', t: '릴스·쇼츠 영상 자주 올림',            s: { iphone16promax:4, s25ultra:2 } },
+      { e: '📝', t: '텍스트·링크 위주',                     s: { a55:2, s25:1, iphone16:1 } },
+      { e: '🔇', t: 'SNS 잘 안 씀',                         s: { a55:2, s25:1 } },
+    ],
+  },
+  {
+    emoji: '💼',
+    text: '폰으로 업무나 공부를 얼마나 해요?',
+    opts: [
+      { e: '🖊️', t: '문서 편집·이메일·PPT 자주 함',       s: { s25ultra:4, iphone16promax:1 } },
+      { e: '📋', t: '가끔 메모하거나 검색',                  s: { s25:2, iphone16:2, pixel9pro:1 } },
+      { e: '🎒', t: '학생, 강의 영상·필기 위주',             s: { s25ultra:2, iphone16promax:1, a55:1 } },
+      { e: '🏖️', t: '폰은 완전 여가용',                    s: { zflip6:2, a55:1, iphone16:1 } },
+    ],
+  },
+  {
+    emoji: '🌟',
+    text: '폰 고를 때 가장 중요한 건?',
+    opts: [
+      { e: '📸', t: '카메라 성능',                           s: { iphone16promax:4, pixel9pro:4 } },
+      { e: '⚡', t: '처리 속도·성능',                        s: { s25ultra:3, iphone16promax:2 } },
+      { e: '🔋', t: '배터리 수명',                           s: { a55:3, s25ultra:2, s25:1 } },
+      { e: '💅', t: '디자인·색상',                           s: { zflip6:4, iphone16:2, iphone16promax:1 } },
+    ],
+  },
+  {
+    emoji: '🎨',
+    text: '폰 디자인, 얼마나 신경 써요?',
+    opts: [
+      { e: '👑', t: '제일 중요해, 들고 다닐 때 예뻐야 해', s: { zflip6:4, iphone16promax:1, iphone16:2 } },
+      { e: '⚖️', t: '중요하긴 한데 성능이 우선',            s: { s25ultra:2, iphone16promax:2, pixel9pro:1 } },
+      { e: '🛠️', t: '성능이면 됨, 디자인은 별로',           s: { s25:2, a55:2 } },
+      { e: '📦', t: '케이스 씌우면 다 똑같지 않나',          s: { a55:2, s25:1 } },
+    ],
+  },
+  {
+    emoji: '🎵',
+    text: '음악이나 팟캐스트는 어떻게 들어요?',
+    opts: [
+      { e: '🎧', t: '블루투스 이어폰으로 매일 들음',        s: { iphone16promax:1, s25ultra:1, iphone16:1, s25:1 } },
+      { e: '🔌', t: '유선 이어폰 써서 이어폰잭 꼭 필요',   s: { a55:3, s25:1 } },
+      { e: '🔊', t: '스피커로 틀어놓는 편',                  s: { s25ultra:2, iphone16promax:1 } },
+      { e: '🔇', t: '잘 안 들음',                            s: { a55:1, zflip6:1 } },
+    ],
+  },
+  {
+    emoji: '💾',
+    text: '저장공간은 어떻게 쓰고 있어요?',
+    opts: [
+      { e: '😤', t: '항상 부족해, 사진만 수천 장',           s: { iphone16promax:3, s25ultra:3 } },
+      { e: '🤙', t: '적당히 써, 가끔 정리함',                s: { iphone16:2, s25:2, pixel9pro:1 } },
+      { e: '☁️', t: '클라우드 잘 써서 걱정 없음',            s: { a55:2, zflip6:1 } },
+      { e: '🗑️', t: '자주 비워서 항상 여유 있음',           s: { a55:2, iphone16:1 } },
+    ],
+  },
+  {
+    emoji: '⚡',
+    text: '충전 방식, 뭐가 더 중요해요?',
+    opts: [
+      { e: '🌀', t: '무선충전이 편해서 그냥 올려놓음',       s: { iphone16promax:2, iphone16:2, s25ultra:2, s25:2 } },
+      { e: '🚀', t: '속도! 빨리 충전되는 게 최고',           s: { s25ultra:3, s25:2, a55:1 } },
+      { e: '🐢', t: '충전 속도보다 오래 버티는 게 중요',     s: { a55:3, s25ultra:1, pixel9pro:1 } },
+      { e: '😐', t: '충전은 그냥 되면 돼',                   s: { iphone16:1, s25:1, a55:1 } },
+    ],
+  },
+  {
+    emoji: '🔮',
+    text: '마지막! 2년 뒤에도 이 폰, 빠릿빠릿했으면 해요?',
+    opts: [
+      { e: '💪', t: '당연하지, 느려지면 못 참아',            s: { iphone16promax:3, s25ultra:3, pixel9pro:2 } },
+      { e: '🙂', t: '어느 정도 버텨주면 충분해',              s: { iphone16:2, s25:2, pixel9pro:1 } },
+      { e: '♻️', t: '2~3년마다 바꿀 것 같아',               s: { a55:2, zflip6:2, s25:1 } },
+      { e: '📅', t: '5년 이상 오래오래 쓸 거야',             s: { pixel9pro:3, iphone16promax:2, iphone16:1 } },
+    ],
+  },
+];
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+let curQ = 0;
+let answers = new Array(QS.length).fill(null);
+let scores  = {};
+PHONES.forEach(p => scores[p.id] = 0);
+
+// ── HELPERS ──────────────────────────────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  document.getElementById('progressWrap').style.display = id === 'quiz' ? 'block' : 'none';
+}
+
+function goHome() {
+  restart();
+  return false;
+}
+
+// ── QUIZ ─────────────────────────────────────────────────────────────────────
+function startQuiz() {
+  curQ = 0;
+  answers.fill(null);
+  PHONES.forEach(p => scores[p.id] = 0);
+  showScreen('quiz');
+  render();
+}
+
+function render() {
+  const q = QS[curQ];
+  document.getElementById('qCounter').textContent = (curQ + 1) + ' / ' + QS.length;
+  document.getElementById('qEmoji').textContent   = q.emoji;
+  document.getElementById('qText').textContent    = q.text;
+  document.getElementById('btnBack').style.visibility = curQ === 0 ? 'hidden' : 'visible';
+  document.getElementById('progressFill').style.width = (curQ / QS.length * 100) + '%';
+
+  const box = document.getElementById('optContainer');
+  box.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn' + (answers[curQ] === i ? ' selected' : '');
+    btn.innerHTML = `<span class="opt-emoji">${opt.e}</span><span>${opt.t}</span>`;
+    btn.onclick = () => pick(i);
+    box.appendChild(btn);
   });
+}
+
+function pick(i) {
+  // Undo previous answer for this question
+  if (answers[curQ] !== null) {
+    const old = QS[curQ].opts[answers[curQ]].s;
+    Object.entries(old).forEach(([id, v]) => scores[id] -= v);
+  }
+  // Apply new answer
+  answers[curQ] = i;
+  const ns = QS[curQ].opts[i].s;
+  Object.entries(ns).forEach(([id, v]) => scores[id] += v);
+
+  // Visual feedback
+  document.querySelectorAll('.opt-btn').forEach((b, idx) => {
+    b.classList.toggle('selected', idx === i);
+  });
+
+  setTimeout(() => {
+    if (curQ < QS.length - 1) { curQ++; render(); }
+    else { loading(); }
+  }, 260);
+}
+
+function prevQuestion() {
+  if (curQ > 0) { curQ--; render(); }
+}
+
+// ── LOADING ───────────────────────────────────────────────────────────────────
+function loading() {
+  showScreen('loading');
+  setTimeout(showResult, 1600);
+}
+
+// ── RESULT ────────────────────────────────────────────────────────────────────
+function showResult() {
+  const sorted = [...PHONES].sort((a, b) => scores[b.id] - scores[a.id]);
+  const top3   = sorted.slice(0, 3);
+  const best   = scores[top3[0].id];
+
+  document.getElementById('resultTitle').textContent =
+    top3[0].name + ' 추천!';
+
+  const container = document.getElementById('phoneCards');
+  container.innerHTML = '';
+
+  const ranks  = ['🥇 BEST MATCH', '🥈 2순위', '🥉 3순위'];
+  const cls    = ['rank-1', 'rank-2', 'rank-3'];
+
+  top3.forEach((phone, i) => {
+    const pct  = best > 0 ? Math.round(scores[phone.id] / best * 100) : 0;
+    const card = document.createElement('div');
+    card.className = `phone-card ${cls[i]}`;
+    card.innerHTML = `
+      <div class="rank-pill">${ranks[i]}</div>
+      <div class="card-top">
+        <div class="phone-icon">${phone.emoji}</div>
+        <div>
+          <div class="phone-name">${phone.name}</div>
+          <div class="phone-price">${phone.price}</div>
+        </div>
+      </div>
+      <div class="match-row">
+        <div class="match-track">
+          <div class="match-fill" style="width:0%" data-w="${pct}%"></div>
+        </div>
+        <div class="match-pct">${pct}%</div>
+      </div>
+      <p class="phone-desc">${phone.desc}</p>
+      <div class="tags">${phone.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+    `;
+    container.appendChild(card);
+  });
+
+  showScreen('result');
+
+  // Animate match bars
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    document.querySelectorAll('.match-fill').forEach(el => {
+      el.style.width = el.dataset.w;
+    });
+  }));
+}
+
+function restart() {
+  curQ = 0;
+  answers.fill(null);
+  PHONES.forEach(p => scores[p.id] = 0);
+  showScreen('landing');
+}
 </script>
 </body>
 </html>
