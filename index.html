@@ -4,23 +4,28 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>내 폰 추천 테스트 | KT</title>
+
+  <!-- ══════════════════════════════════════════
+       Google AdSense — 헤드 스크립트 삽입 위치
+       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+  ══════════════════════════════════════════ -->
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #FFFFFF;
-      --surface:   #F5F5F7;
-      --surface2:  #EBEBED;
-      --text:      #1D1D1F;
-      --muted:     #6E6E73;
-      --border:    #D2D2D7;
-      --accent:    #0066CC;
-      --radius:    16px;
-      --font:      -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+      --bg:      #FFFFFF;
+      --surface: #F5F5F7;
+      --sur2:    #EAEAEC;
+      --text:    #1D1D1F;
+      --muted:   #6E6E73;
+      --border:  #D2D2D7;
+      --accent:  #0066CC;
+      --r:       16px;
+      --font:    -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
     }
 
     html { scroll-behavior: smooth; }
-
     body {
       font-family: var(--font);
       background: var(--bg);
@@ -33,46 +38,48 @@
     /* ── Header ── */
     header {
       flex-shrink: 0;
+      height: 52px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 24px;
-      height: 56px;
       border-bottom: 1px solid var(--border);
     }
-
     .logo {
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 700;
       color: var(--text);
       text-decoration: none;
-      letter-spacing: -0.3px;
     }
     .logo span { color: var(--accent); }
-
-    nav { display: flex; gap: 4px; }
     nav a {
       color: var(--muted);
       text-decoration: none;
-      font-size: 0.82rem;
-      padding: 6px 10px;
+      font-size: 0.8rem;
+      padding: 5px 10px;
       border-radius: 8px;
-      transition: color 0.15s, background 0.15s;
+      transition: color .15s, background .15s;
     }
     nav a:hover { color: var(--text); background: var(--surface); }
 
-    /* ── Progress bar ── */
-    #progressWrap {
+    /* ── Progress ── */
+    #progressWrap { flex-shrink: 0; height: 3px; background: var(--sur2); display: none; }
+    #progressFill { height: 100%; background: var(--accent); transition: width .35s ease; }
+
+    /* ── AdSense banner slot ── */
+    .ad-banner {
       flex-shrink: 0;
-      height: 3px;
-      background: var(--surface2);
-      display: none;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 60px;
+      font-size: 0.75rem;
+      color: var(--muted);
     }
-    #progressFill {
-      height: 100%;
-      background: var(--accent);
-      transition: width 0.35s ease;
-    }
+    /* 실제 애드센스 적용 시 위 .ad-banner 의 placeholder 텍스트 제거 후
+       <ins class="adsbygoogle"> 태그를 이 div 안에 삽입하세요 */
 
     /* ── Screens ── */
     .screen { display: none; flex: 1; }
@@ -85,370 +92,390 @@
       padding: 48px 24px 64px;
       text-align: center;
     }
-
     .landing-icon {
-      width: 80px; height: 80px;
+      width: 72px; height: 72px;
       background: var(--surface);
-      border-radius: 24px;
+      border-radius: 20px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 2.4rem;
-      margin: 0 auto 28px;
+      font-size: 2rem;
+      margin: 0 auto 24px;
     }
-
     .landing-title {
       font-size: clamp(1.9rem, 5vw, 2.8rem);
       font-weight: 900;
-      line-height: 1.2;
       letter-spacing: -1.5px;
-      margin-bottom: 14px;
+      line-height: 1.2;
+      margin-bottom: 12px;
     }
-
     .landing-sub {
-      font-size: 1rem;
+      font-size: 0.98rem;
       color: var(--muted);
       line-height: 1.65;
-      max-width: 360px;
-      margin: 0 auto 36px;
+      max-width: 340px;
+      margin: 0 auto 32px;
     }
-
     .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+      display: inline-flex; align-items: center; gap: 8px;
       background: var(--text);
       color: #fff;
       font-size: 0.95rem;
       font-weight: 700;
-      padding: 15px 36px;
-      border: none;
-      border-radius: 999px;
-      cursor: pointer;
-      font-family: var(--font);
-      letter-spacing: -0.2px;
-      transition: opacity 0.2s, transform 0.2s;
+      padding: 14px 34px;
+      border: none; border-radius: 999px;
+      cursor: pointer; font-family: var(--font);
+      transition: opacity .2s, transform .2s;
     }
-    .btn-primary:hover { opacity: 0.82; transform: translateY(-1px); }
-    .btn-primary:active { transform: translateY(0); }
-
-    .landing-meta {
-      margin-top: 16px;
-      font-size: 0.82rem;
-      color: var(--muted);
-    }
-
-    .landing-features {
-      display: flex;
-      gap: 8px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 40px;
-    }
-
-    .feat-chip {
-      display: flex; align-items: center; gap: 6px;
-      font-size: 0.8rem;
-      color: var(--muted);
+    .btn-primary:hover { opacity: .82; transform: translateY(-1px); }
+    .landing-meta { margin-top: 14px; font-size: 0.8rem; color: var(--muted); }
+    .chips { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 32px; }
+    .chip {
+      font-size: 0.78rem; color: var(--muted);
       background: var(--surface);
-      padding: 6px 14px;
-      border-radius: 999px;
+      padding: 5px 13px; border-radius: 999px;
     }
 
     /* ── Quiz ── */
-    #screen-quiz {
-      overflow-y: auto;
-    }
-
+    #screen-quiz { overflow-y: auto; }
     .quiz-inner {
-      width: 100%;
-      max-width: 580px;
+      width: 100%; max-width: 560px;
       margin: 0 auto;
-      padding: 36px 24px 80px;
+      padding: 32px 24px 80px;
     }
-
     .quiz-topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 36px;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 32px;
     }
-
     .btn-back {
       background: none; border: none;
-      color: var(--muted);
-      font-size: 0.88rem;
-      font-family: var(--font);
-      cursor: pointer;
-      padding: 6px 0;
+      color: var(--muted); font-size: 0.85rem;
+      font-family: var(--font); cursor: pointer;
       display: flex; align-items: center; gap: 4px;
-      transition: color 0.15s;
+      transition: color .15s;
     }
     .btn-back:hover { color: var(--text); }
-
-    .q-counter {
-      font-size: 0.82rem;
-      color: var(--muted);
-      font-weight: 500;
-    }
-
-    .q-emoji {
-      font-size: 2.2rem;
-      margin-bottom: 12px;
-      display: block;
-    }
-
+    .q-counter { font-size: 0.8rem; color: var(--muted); font-weight: 500; }
+    .q-emoji { font-size: 2rem; margin-bottom: 10px; display: block; }
     .q-text {
-      font-size: clamp(1.15rem, 3vw, 1.45rem);
-      font-weight: 800;
-      line-height: 1.35;
-      letter-spacing: -0.5px;
-      margin-bottom: 28px;
+      font-size: clamp(1.15rem, 3vw, 1.42rem);
+      font-weight: 800; letter-spacing: -0.5px; line-height: 1.35;
+      margin-bottom: 24px;
     }
-
-    .options {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
+    .options { display: flex; flex-direction: column; gap: 9px; }
     .opt-btn {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 16px 18px;
+      display: flex; align-items: center; gap: 13px;
+      padding: 15px 17px;
       background: var(--surface);
-      border: 2px solid transparent;
-      border-radius: var(--radius);
-      cursor: pointer;
-      text-align: left;
-      font-size: 0.93rem;
-      font-weight: 500;
-      color: var(--text);
-      font-family: var(--font);
-      width: 100%;
-      transition: border-color 0.15s, background 0.15s, transform 0.1s;
+      border: 2px solid transparent; border-radius: var(--r);
+      cursor: pointer; text-align: left;
+      font-size: 0.92rem; font-weight: 500; color: var(--text);
+      font-family: var(--font); width: 100%;
+      transition: border-color .15s, background .15s;
     }
-    .opt-btn:hover {
-      border-color: var(--accent);
-      background: rgba(0, 102, 204, 0.05);
-    }
-    .opt-btn:active { transform: scale(0.99); }
-    .opt-btn.selected {
-      border-color: var(--accent);
-      background: rgba(0, 102, 204, 0.07);
-    }
-    .opt-emoji { font-size: 1.3rem; flex-shrink: 0; line-height: 1; }
+    .opt-btn:hover { border-color: var(--accent); background: rgba(0,102,204,.05); }
+    .opt-btn.selected { border-color: var(--accent); background: rgba(0,102,204,.07); }
+    .opt-e { font-size: 1.25rem; flex-shrink: 0; line-height: 1; }
 
     /* ── Loading ── */
     #screen-loading {
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 40px 24px;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 40px 24px;
     }
-
     .spinner {
-      width: 44px; height: 44px;
-      border: 3px solid var(--surface2);
+      width: 40px; height: 40px;
+      border: 3px solid var(--sur2);
       border-top-color: var(--accent);
       border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-      margin: 0 auto 24px;
+      animation: spin .7s linear infinite;
+      margin: 0 auto 20px;
     }
-
     @keyframes spin { to { transform: rotate(360deg); } }
-
-    .loading-title {
-      font-size: 1.15rem;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-    .loading-sub { color: var(--muted); font-size: 0.88rem; }
+    .loading-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
+    .loading-sub { color: var(--muted); font-size: 0.85rem; }
 
     /* ── Result ── */
     #screen-result { overflow-y: auto; }
-
     .result-inner {
-      width: 100%;
-      max-width: 640px;
+      width: 100%; max-width: 680px;
       margin: 0 auto;
       padding: 40px 24px 80px;
     }
-
-    .result-header {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-
-    .result-header-icon {
-      font-size: 2.8rem;
-      margin-bottom: 14px;
-    }
-
+    .result-header { text-align: center; margin-bottom: 36px; }
+    .result-header-icon { font-size: 2.4rem; margin-bottom: 12px; }
     .result-title {
-      font-size: clamp(1.3rem, 3.5vw, 1.9rem);
-      font-weight: 900;
-      letter-spacing: -1px;
-      margin-bottom: 6px;
+      font-size: clamp(1.3rem, 3.5vw, 1.85rem);
+      font-weight: 900; letter-spacing: -1px; margin-bottom: 5px;
     }
+    .result-sub { color: var(--muted); font-size: 0.87rem; }
 
-    .result-sub { color: var(--muted); font-size: 0.9rem; }
+    /* ── AdSense mid-result slot ── */
+    .ad-mid {
+      background: var(--surface);
+      border-radius: var(--r);
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100px;
+      font-size: 0.75rem; color: var(--muted);
+      margin-bottom: 20px;
+    }
+    /* 애드센스 적용 시 이 div 안에 <ins class="adsbygoogle"> 태그 삽입 */
 
-    /* Phone cards */
+    /* ── Phone Cards ── */
     .phone-cards { display: flex; flex-direction: column; gap: 14px; }
 
     .phone-card {
       border-radius: 20px;
-      padding: 24px;
+      padding: 22px;
       position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
     }
-
-    .phone-card.rank-1 {
-      background: var(--text);
-      color: #fff;
-    }
-
-    .phone-card.rank-2, .phone-card.rank-3 {
-      background: var(--surface);
-      color: var(--text);
-    }
+    .phone-card.rank-1 { background: var(--text); color: #fff; }
+    .phone-card.rank-2, .phone-card.rank-3 { background: var(--surface); }
 
     .rank-pill {
+      position: absolute; top: 18px; right: 18px;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: .04em;
+      padding: 3px 10px; border-radius: 999px;
+    }
+    .rank-1 .rank-pill { background: rgba(255,255,255,.15); color: rgba(255,255,255,.8); }
+    .rank-2 .rank-pill, .rank-3 .rank-pill { background: rgba(0,0,0,.07); color: var(--muted); }
+
+    /* Card body: phone visual + info side by side */
+    .card-body {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    /* ── CSS Phone Mockup ── */
+    .phone-mockup {
+      flex-shrink: 0;
+      width: 68px; height: 118px;
+      border-radius: 14px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,.18);
+    }
+    .phone-mockup .pm-body {
+      position: absolute; inset: 0;
+      border-radius: 14px;
+    }
+    .phone-mockup .pm-screen {
       position: absolute;
-      top: 18px; right: 18px;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      padding: 4px 10px;
-      border-radius: 999px;
+      top: 7px; left: 3px; right: 3px; bottom: 7px;
+      border-radius: 11px;
+    }
+    .phone-mockup .pm-pill {
+      position: absolute; top: 11px; left: 50%;
+      transform: translateX(-50%);
+      width: 22px; height: 5px;
+      background: rgba(0,0,0,.45);
+      border-radius: 3px;
+      z-index: 2;
+    }
+    .phone-mockup .pm-hole {
+      position: absolute; top: 12px; left: 50%;
+      transform: translateX(-50%);
+      width: 7px; height: 7px;
+      background: rgba(0,0,0,.5);
+      border-radius: 50%;
+      z-index: 2;
+    }
+    /* Camera bumps */
+    .phone-mockup .pm-cam {
+      position: absolute;
+      z-index: 2;
+    }
+    /* Notch style for older iPhones */
+    .phone-mockup .pm-notch {
+      position: absolute; top: 7px; left: 50%;
+      transform: translateX(-50%);
+      width: 28px; height: 10px;
+      background: rgba(0,0,0,.45);
+      border-radius: 0 0 8px 8px;
+      z-index: 2;
     }
 
-    .rank-1 .rank-pill {
-      background: rgba(255,255,255,0.15);
-      color: rgba(255,255,255,0.85);
+    /* iPhone 17 Pro Max */
+    .pm-i17promax .pm-body { background: linear-gradient(145deg,#5A5A5E,#3A3A3C); }
+    .pm-i17promax .pm-screen { background: linear-gradient(160deg,#1a2a4a,#0a1a2e); }
+    .pm-i17promax .pm-cam-cluster {
+      position: absolute; top: 10px; left: 8px;
+      width: 22px; height: 22px;
+      background: rgba(0,0,0,.4);
+      border-radius: 7px;
+      z-index: 2;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .pm-i17promax .pm-cam-cluster::before,
+    .pm-i17promax .pm-cam-cluster::after {
+      content: '';
+      position: absolute;
+      width: 7px; height: 7px;
+      background: #222;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.15);
+    }
+    .pm-i17promax .pm-cam-cluster::before { top: 3px; left: 3px; }
+    .pm-i17promax .pm-cam-cluster::after  { bottom: 3px; right: 3px; }
+
+    /* iPhone 17 */
+    .pm-i17 .pm-body { background: linear-gradient(145deg,#E8E8E0,#C8C8C0); }
+    .pm-i17 .pm-screen { background: linear-gradient(160deg,#1a2a4a,#0a1a2e); }
+    .pm-i17 .pm-cam2 {
+      position: absolute; top: 10px; left: 50%;
+      transform: translateX(-50%);
+      width: 24px; height: 14px;
+      background: rgba(0,0,0,.35);
+      border-radius: 8px;
+      z-index: 2;
     }
 
-    .rank-2 .rank-pill, .rank-3 .rank-pill {
-      background: rgba(0,0,0,0.07);
-      color: var(--muted);
+    /* Galaxy S26 Ultra */
+    .pm-s26u .pm-body { background: linear-gradient(145deg,#1a1a2e,#16213E); }
+    .pm-s26u .pm-screen { background: linear-gradient(160deg,#0d2137,#071528); }
+    .pm-s26u .pm-cam-strip {
+      position: absolute; top: 10px; left: 50%;
+      transform: translateX(-50%);
+      width: 30px; height: 26px;
+      background: rgba(0,0,0,.5);
+      border-radius: 8px;
+      z-index: 2;
+      display: flex; flex-direction: column; align-items: center; justify-content: space-around;
+      padding: 3px;
     }
 
-    .card-top {
-      display: flex; align-items: center; gap: 14px;
-      margin-bottom: 18px;
+    /* Galaxy S26 */
+    .pm-s26 .pm-body { background: linear-gradient(145deg,#2D2D30,#1a1a1a); }
+    .pm-s26 .pm-screen { background: linear-gradient(160deg,#1a2a3a,#0a1520); }
+
+    /* Pixel 9 Pro */
+    .pm-pixel .pm-body { background: linear-gradient(145deg,#F2F2F2,#E0E0E0); }
+    .pm-pixel .pm-screen { background: linear-gradient(160deg,#1a1a2e,#0d0d1e); }
+    .pm-pixel .pm-bar {
+      position: absolute; top: 14px; left: 0; right: 0;
+      height: 18px;
+      background: rgba(0,0,0,.08);
+      z-index: 2;
+      display: flex; align-items: center; justify-content: center; gap: 5px;
+    }
+    .pm-pixel .pm-bar::before, .pm-pixel .pm-bar::after {
+      content: '';
+      width: 8px; height: 8px;
+      background: #888;
+      border-radius: 50%;
     }
 
-    .phone-icon { font-size: 2.2rem; flex-shrink: 0; }
+    /* Z Flip6 */
+    .pm-flip .pm-body { background: linear-gradient(145deg,#9b59b6,#8e44ad); }
+    .pm-flip .pm-screen { background: linear-gradient(160deg,#2c1654,#1a0a30); }
+    .pm-flip .pm-fold {
+      position: absolute; top: 50%; left: 0; right: 0;
+      height: 2px; background: rgba(0,0,0,.3);
+      z-index: 2;
+    }
+    .pm-flip .pm-mini-screen {
+      position: absolute; top: 10px; left: 8px; right: 8px;
+      height: 28px; background: rgba(255,255,255,.12);
+      border-radius: 6px; z-index: 2;
+    }
 
+    /* Galaxy A56 */
+    .pm-a56 .pm-body { background: linear-gradient(145deg,#4A90D9,#357ABD); }
+    .pm-a56 .pm-screen { background: linear-gradient(160deg,#1a2a4a,#0a1830); }
+    .pm-a56 .pm-cam3 {
+      position: absolute; top: 10px; left: 50%;
+      transform: translateX(-50%);
+      width: 18px; height: 22px;
+      background: rgba(0,0,0,.3);
+      border-radius: 6px;
+      z-index: 2;
+    }
+
+    /* Shared camera dot helper */
+    .cam-dot {
+      width: 7px; height: 7px;
+      background: #111; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.2);
+      flex-shrink: 0;
+    }
+    .cam-dot.sm { width: 5px; height: 5px; }
+
+    /* ── Card info ── */
+    .card-info { flex: 1; min-width: 0; }
     .phone-name {
-      font-size: 1.1rem;
-      font-weight: 800;
-      letter-spacing: -0.4px;
-      margin-bottom: 3px;
+      font-size: 1.05rem;
+      font-weight: 800; letter-spacing: -0.4px;
+      margin-bottom: 3px; margin-right: 80px;
     }
-
-    .phone-price {
-      font-size: 0.82rem;
-      font-weight: 500;
-    }
-
-    .rank-1 .phone-price { color: rgba(255,255,255,0.55); }
+    .phone-price { font-size: 0.8rem; font-weight: 500; margin-bottom: 12px; }
+    .rank-1 .phone-price { color: rgba(255,255,255,.5); }
     .rank-2 .phone-price, .rank-3 .phone-price { color: var(--muted); }
 
-    .match-row {
-      display: flex; align-items: center; gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    .match-track {
-      flex: 1; height: 5px;
-      border-radius: 999px;
-      overflow: hidden;
-    }
-
-    .rank-1 .match-track { background: rgba(255,255,255,0.15); }
-    .rank-2 .match-track, .rank-3 .match-track { background: rgba(0,0,0,0.09); }
-
+    .match-row { display: flex; align-items: center; gap: 9px; margin-bottom: 12px; }
+    .match-track { flex: 1; height: 5px; border-radius: 999px; overflow: hidden; }
+    .rank-1 .match-track { background: rgba(255,255,255,.15); }
+    .rank-2 .match-track, .rank-3 .match-track { background: rgba(0,0,0,.09); }
     .match-fill {
       height: 100%; border-radius: 999px;
-      transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: width 1s cubic-bezier(.22,1,.36,1);
     }
-
     .rank-1 .match-fill { background: #fff; }
     .rank-2 .match-fill, .rank-3 .match-fill { background: var(--accent); }
-
-    .match-pct {
-      font-size: 0.82rem;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    .rank-1 .match-pct { color: rgba(255,255,255,0.75); }
+    .match-pct { font-size: 0.8rem; font-weight: 700; white-space: nowrap; }
+    .rank-1 .match-pct { color: rgba(255,255,255,.7); }
     .rank-2 .match-pct, .rank-3 .match-pct { color: var(--muted); }
 
     .phone-desc {
-      font-size: 0.88rem;
-      line-height: 1.6;
-      margin-bottom: 14px;
+      font-size: 0.85rem; line-height: 1.6; margin-bottom: 12px;
     }
-
-    .rank-1 .phone-desc { color: rgba(255,255,255,0.7); }
+    .rank-1 .phone-desc { color: rgba(255,255,255,.65); }
     .rank-2 .phone-desc, .rank-3 .phone-desc { color: var(--muted); }
 
     .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag { font-size: 0.73rem; font-weight: 600; padding: 4px 10px; border-radius: 999px; }
+    .rank-1 .tag { background: rgba(255,255,255,.12); color: rgba(255,255,255,.75); }
+    .rank-2 .tag, .rank-3 .tag { background: rgba(0,0,0,.06); color: var(--muted); }
 
-    .tag {
-      font-size: 0.75rem;
-      font-weight: 600;
-      padding: 4px 11px;
-      border-radius: 999px;
-    }
-
-    .rank-1 .tag {
-      background: rgba(255,255,255,0.12);
-      color: rgba(255,255,255,0.8);
-    }
-
-    .rank-2 .tag, .rank-3 .tag {
-      background: rgba(0,0,0,0.06);
-      color: var(--muted);
+    /* New badge */
+    .new-badge {
+      display: inline-block;
+      font-size: 0.65rem; font-weight: 700;
+      background: #FF3B30; color: white;
+      padding: 2px 7px; border-radius: 999px;
+      margin-left: 7px; vertical-align: middle;
+      letter-spacing: .04em;
     }
 
     /* Retry */
-    .retry-wrap {
-      text-align: center;
-      margin-top: 32px;
-    }
-
+    .retry-wrap { text-align: center; margin-top: 28px; }
     .btn-ghost {
       display: inline-flex; align-items: center; gap: 6px;
-      background: none;
-      color: var(--text);
-      font-size: 0.88rem;
-      font-weight: 600;
-      padding: 11px 26px;
-      border: 1.5px solid var(--border);
-      border-radius: 999px;
-      cursor: pointer;
-      font-family: var(--font);
-      transition: border-color 0.15s;
+      background: none; color: var(--text);
+      font-size: 0.85rem; font-weight: 600;
+      padding: 10px 24px;
+      border: 1.5px solid var(--border); border-radius: 999px;
+      cursor: pointer; font-family: var(--font);
+      transition: border-color .15s;
     }
     .btn-ghost:hover { border-color: var(--text); }
 
-    /* ── Footer ── */
+    /* Footer */
     footer {
       flex-shrink: 0;
       border-top: 1px solid var(--border);
-      padding: 18px 24px;
+      padding: 16px 24px;
       text-align: center;
       color: var(--muted);
-      font-size: 0.78rem;
+      font-size: 0.76rem;
     }
 
-    /* ── Responsive ── */
     @media (max-width: 480px) {
-      .quiz-inner, .result-inner { padding: 28px 16px 60px; }
-      .phone-card { padding: 18px; }
-      .landing-features { display: none; }
+      .quiz-inner, .result-inner { padding: 24px 16px 60px; }
+      .phone-card { padding: 16px; }
+      .phone-mockup { width: 58px; height: 100px; }
+      .chips { display: none; }
     }
   </style>
 </head>
@@ -462,25 +489,29 @@
   </nav>
 </header>
 
+<!-- ══ AdSense 상단 배너 슬롯 ══
+     실제 적용 시 아래 div 내부에 애드센스 코드를 넣으세요
+<div class="ad-banner">
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXX" data-ad-slot="XXXX" data-ad-format="auto"></ins>
+</div>
+-->
+
 <div id="progressWrap"><div id="progressFill" style="width:0%"></div></div>
 
 <!-- ── LANDING ── -->
 <div class="screen active" id="screen-landing">
   <div class="landing-icon">📱</div>
   <h1 class="landing-title">나에게 딱 맞는<br>폰 찾기</h1>
-  <p class="landing-sub">
-    사용 패턴, 취향, 예산을 분석해<br>
-    최적의 스마트폰을 추천해드려요.
-  </p>
+  <p class="landing-sub">7가지 질문으로 사용 패턴과 취향을 분석해<br>최신 플래그십부터 가성비 폰까지 추천해드려요.</p>
   <button class="btn-primary" onclick="startQuiz()">
     테스트 시작하기
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
   </button>
-  <p class="landing-meta">15개 질문 · 약 3분</p>
-  <div class="landing-features">
-    <span class="feat-chip">✦ 무료</span>
-    <span class="feat-chip">✦ 결과 즉시 확인</span>
-    <span class="feat-chip">✦ 7가지 폰 비교</span>
+  <p class="landing-meta">7개 질문 · 약 1분</p>
+  <div class="chips">
+    <span class="chip">✦ 무료</span>
+    <span class="chip">✦ 2025~2026 최신 모델</span>
+    <span class="chip">✦ 즉시 결과 확인</span>
   </div>
 </div>
 
@@ -488,10 +519,8 @@
 <div class="screen" id="screen-quiz">
   <div class="quiz-inner">
     <div class="quiz-topbar">
-      <button class="btn-back" id="btnBack" onclick="prevQuestion()">
-        ← 이전
-      </button>
-      <span class="q-counter" id="qCounter">1 / 15</span>
+      <button class="btn-back" id="btnBack" onclick="prevQ()">← 이전</button>
+      <span class="q-counter" id="qCounter">1 / 7</span>
     </div>
     <span class="q-emoji" id="qEmoji"></span>
     <div class="q-text" id="qText"></div>
@@ -503,7 +532,7 @@
 <div class="screen" id="screen-loading">
   <div class="spinner"></div>
   <div class="loading-title">분석 중이에요...</div>
-  <div class="loading-sub">답변을 바탕으로 최적의 폰을 찾고 있어요</div>
+  <div class="loading-sub">취향에 맞는 최적의 폰을 찾고 있어요</div>
 </div>
 
 <!-- ── RESULT ── -->
@@ -512,9 +541,18 @@
     <div class="result-header">
       <div class="result-header-icon">🎯</div>
       <h2 class="result-title" id="resultTitle"></h2>
-      <p class="result-sub">답변 분석 완료 · 상위 3개 추천</p>
+      <p class="result-sub">분석 완료 · 상위 3개 추천</p>
     </div>
+
+    <!-- ══ AdSense 결과 중간 슬롯 ══
+         실제 적용 시 아래 div 내부에 애드센스 코드를 넣으세요
+    <div class="ad-mid">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXX" data-ad-slot="XXXX" data-ad-format="auto"></ins>
+    </div>
+    -->
+
     <div class="phone-cards" id="phoneCards"></div>
+
     <div class="retry-wrap">
       <button class="btn-ghost" onclick="restart()">↺ 다시 테스트하기</button>
     </div>
@@ -524,245 +562,225 @@
 <footer>© 2026 KT Corporation. All rights reserved.</footer>
 
 <script>
-// ── PHONES ──────────────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════
+//  PHONES
+//  ※ iPhone 17 / Galaxy S26: 2025년 9월·2026년 초 출시 모델
+//    가격 및 스펙은 출시 정보 기준이므로 변경될 수 있습니다.
+// ══════════════════════════════════════════════════════════════
 const PHONES = [
   {
-    id: 'iphone16promax',
-    name: 'iPhone 16 Pro Max',
-    emoji: '🍎',
-    price: '약 189만원~',
-    desc: '최강의 카메라 시스템과 A18 Pro 칩셋. 사진·영상 창작자와 Apple 생태계 헤비유저를 위한 최정상 선택.',
-    tags: ['최고급 카메라', '4K ProRes 영상', 'iOS', '6.9인치'],
+    id: 'i17promax',
+    name: 'iPhone 17 Pro Max',
+    isNew: true,
+    pmClass: 'pm-i17promax',
+    price: '약 210만원~ (예상)',
+    desc: 'A19 Pro 칩셋과 혁신적인 카메라 시스템. Apple 생태계의 최정상, 사진·영상 창작자의 궁극적 선택.',
+    tags: ['A19 Pro', '최고급 카메라', '4K 영상', 'iOS 19'],
   },
   {
-    id: 'iphone16',
-    name: 'iPhone 16',
-    emoji: '🍎',
-    price: '약 125만원~',
-    desc: '군더더기 없는 깔끔함에 카메라 컨트롤 버튼까지. 처음 아이폰이거나 심플함을 원하는 사람에게 딱.',
-    tags: ['밸런스', 'iOS', '카메라 버튼', '가볍고 슬림'],
+    id: 'i17',
+    name: 'iPhone 17',
+    isNew: true,
+    pmClass: 'pm-i17',
+    price: '약 140만원~ (예상)',
+    desc: '더 얇아진 디자인, 카메라 컨트롤 버튼. 심플함과 성능의 균형을 원하는 Apple 팬에게.',
+    tags: ['슬림 디자인', 'iOS', '카메라 버튼', '가볍고 얇음'],
   },
   {
-    id: 's25ultra',
-    name: 'Galaxy S25 Ultra',
-    emoji: '🔷',
-    price: '약 169만원~',
-    desc: 'S펜과 Snapdragon 8 Elite로 업무·멀티태스킹의 끝판왕. 대화면과 AI 기능이 필요한 파워유저에게.',
-    tags: ['S펜', '최고 성능', 'Galaxy AI', '6.9인치'],
+    id: 's26ultra',
+    name: 'Galaxy S26 Ultra',
+    isNew: true,
+    pmClass: 'pm-s26u',
+    price: '약 180만원~ (예상)',
+    desc: 'S펜과 최신 AI 기능, 압도적인 성능. 안드로이드 파워유저와 업무 헤비유저를 위한 선택.',
+    tags: ['S펜', 'Galaxy AI', '최고 성능', '대화면'],
   },
   {
-    id: 's25',
-    name: 'Galaxy S25',
-    emoji: '🔷',
-    price: '약 115만원~',
-    desc: '갤럭시 라인업의 스위트스팟. 최신 AI 기능과 날렵한 디자인, 가격의 균형이 완벽한 올라운더.',
-    tags: ['밸런스', 'Android', '가볍고 슬림', 'Galaxy AI'],
+    id: 's26',
+    name: 'Galaxy S26',
+    isNew: true,
+    pmClass: 'pm-s26',
+    price: '약 125만원~ (예상)',
+    desc: '최신 갤럭시의 스위트스팟. 플래그십 AI 기능과 날렵한 폼팩터를 합리적 가격으로.',
+    tags: ['밸런스', 'Galaxy AI', '슬림', 'Android'],
   },
   {
     id: 'pixel9pro',
     name: 'Google Pixel 9 Pro',
-    emoji: '🟢',
+    isNew: false,
+    pmClass: 'pm-pixel',
     price: '약 149만원~',
-    desc: '구글 AI의 집약체. 매직 에디터와 베스트 테이크 등 사진 후보정이 독보적. 7년 OS 업데이트 보장.',
-    tags: ['AI 카메라', '순정 Android', '7년 업데이트', 'Magic Editor'],
-  },
-  {
-    id: 'a55',
-    name: 'Galaxy A55',
-    emoji: '💙',
-    price: '약 60만원~',
-    desc: '일상 사용에 충분한 성능과 카메라, IP67 방수까지. 가성비를 따진다면 이 선택이 가장 현명해요.',
-    tags: ['가성비', 'IP67 방수', '5000mAh 대용량', '이어폰잭'],
+    desc: '구글 AI의 집약체. 매직 에디터·베스트 테이크 등 사진 후보정이 독보적. 7년 OS 업데이트 보장.',
+    tags: ['AI 카메라', '순정 Android', '7년 업데이트', 'Magic Eraser'],
   },
   {
     id: 'zflip6',
     name: 'Galaxy Z Flip6',
-    emoji: '🦋',
+    isNew: false,
+    pmClass: 'pm-flip',
     price: '약 139만원~',
-    desc: '접으면 손바닥 크기, 펼치면 풀스크린. 남들과 다른 폼팩터로 개성을 표현하고 싶다면.',
+    desc: '접으면 손바닥 크기, 펼치면 풀스크린. 독보적인 폼팩터로 개성을 표현하고 싶다면.',
     tags: ['폴더블', '컴팩트', '개성', 'FlexMode 셀카'],
+  },
+  {
+    id: 'a56',
+    name: 'Galaxy A56',
+    isNew: true,
+    pmClass: 'pm-a56',
+    price: '약 65만원~',
+    desc: '일상에 충분한 성능과 AI 기능, IP67 방수까지. 가성비를 따진다면 가장 현명한 선택.',
+    tags: ['가성비', 'IP67 방수', '대용량 배터리', '이어폰잭'],
   },
 ];
 
-// ── QUESTIONS ───────────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════
+//  QUESTIONS (7개 — 핵심 차별 요소만)
+// ══════════════════════════════════════════════════════════════
 const QS = [
   {
-    emoji: '🌅',
-    text: '오늘 하루 폰으로 가장 많이 한 것은?',
+    emoji: '🎯',
+    text: '폰으로 가장 많이 하는 것 한 가지를 고르면?',
     opts: [
-      { e: '🎬', t: '유튜브·넷플릭스 정주행',          s: { iphone16promax:2, s25ultra:2, s25:1 } },
-      { e: '📸', t: '사진·영상 찍기',                  s: { iphone16promax:3, pixel9pro:3, iphone16:1 } },
-      { e: '🎮', t: '모바일 게임 (진지하게)',            s: { s25ultra:4, s25:2, iphone16promax:1 } },
-      { e: '💬', t: '카톡·인스타·쇼핑',                 s: { iphone16:2, s25:2, a55:2, zflip6:1 } },
-    ],
-  },
-  {
-    emoji: '📷',
-    text: '카메라 앱을 열면 주로 뭘 찍나요?',
-    opts: [
-      { e: '🌄', t: '여행·풍경·일상 스냅',             s: { iphone16promax:2, pixel9pro:3, iphone16:1 } },
-      { e: '🤳', t: '셀카 위주 (전면 카메라 중요)',      s: { zflip6:3, iphone16:2, s25:1 } },
-      { e: '🌙', t: '야경·어두운 실내',                  s: { iphone16promax:3, pixel9pro:3, s25ultra:1 } },
-      { e: '🚫', t: '카메라 거의 안 씀',                 s: { a55:3, s25:1 } },
-    ],
-  },
-  {
-    emoji: '🔋',
-    text: '배터리가 10%일 때 나는?',
-    opts: [
-      { e: '😱', t: '공황 상태, 충전기 찾아 헤맴',       s: { a55:3, s25ultra:2, s25:1 } },
-      { e: '😅', t: '슬슬 충전해야지 하고 찾음',          s: { s25:2, iphone16:2, s25ultra:1 } },
-      { e: '😎', t: '0%까지 써도 별로 안 불편해',         s: { iphone16:2, iphone16promax:1 } },
-      { e: '🔌', t: '충전기를 항상 들고 다님',             s: { s25ultra:2, a55:1, pixel9pro:1 } },
-    ],
-  },
-  {
-    emoji: '📐',
-    text: '폰 화면 크기, 어떤 게 좋아요?',
-    opts: [
-      { e: '🖥️', t: '클수록 좋아, 거의 태블릿 수준',     s: { s25ultra:4, iphone16promax:2 } },
-      { e: '📱', t: '딱 적당한 6.1~6.5인치',              s: { iphone16:2, s25:2, pixel9pro:2 } },
-      { e: '✋', t: '한 손에 쏙, 작고 가벼워야 해',         s: { zflip6:4, iphone16:2 } },
-      { e: '🤷', t: '크기는 별로 안 중요해',               s: { a55:1, pixel9pro:1, s25:1 } },
+      { e: '📸', t: '사진·영상 찍고 편집',          s: { i17promax:4, pixel9pro:4, i17:1, s26ultra:1 } },
+      { e: '🎮', t: '모바일 게임 (진지하게)',          s: { s26ultra:4, s26:2, i17promax:1 } },
+      { e: '💼', t: '업무·문서·이메일',              s: { s26ultra:4, i17promax:1, s26:1 } },
+      { e: '💬', t: 'SNS·유튜브·일상 콘텐츠 소비',   s: { i17:2, s26:2, a56:2, zflip6:1 } },
     ],
   },
   {
     emoji: '💰',
     text: '솔직한 예산은?',
     opts: [
-      { e: '💎', t: '가격 상관없어, 최고로 줘',           s: { iphone16promax:4, s25ultra:4, pixel9pro:2 } },
-      { e: '💳', t: '100만원대까지는 OK',                  s: { iphone16promax:2, s25ultra:2, iphone16:2, s25:2, pixel9pro:2, zflip6:2 } },
-      { e: '🧾', t: '70~100만원 사이',                     s: { iphone16:2, s25:3, zflip6:1 } },
-      { e: '🏷️', t: '최대한 저렴하게',                    s: { a55:5 } },
+      { e: '💎', t: '200만원 이상도 OK, 최고로',       s: { i17promax:5, s26ultra:5 } },
+      { e: '💳', t: '100~180만원 사이 플래그십',        s: { i17promax:2, s26ultra:2, i17:2, s26:2, pixel9pro:2, zflip6:2 } },
+      { e: '🧾', t: '70~120만원 사이',                 s: { i17:2, s26:3, zflip6:1 } },
+      { e: '🏷️', t: '최대한 저렴하게 (70만원 이하)',   s: { a56:5 } },
     ],
   },
   {
-    emoji: '🤳',
-    text: '현재 쓰는 폰 브랜드는?',
+    emoji: '🍎',
+    text: '운영체제 취향은?',
     opts: [
-      { e: '🍎', t: '아이폰, 계속 아이폰 쓸 것 같아',     s: { iphone16promax:3, iphone16:3 } },
-      { e: '🔷', t: '갤럭시, 안드로이드가 편해',           s: { s25ultra:2, s25:2, a55:1, zflip6:1 } },
-      { e: '🟢', t: '다른 안드로이드',                      s: { pixel9pro:2, s25:1, a55:1 } },
-      { e: '🆕', t: '처음 사거나, 브랜드 바꿔볼까 해',     s: { iphone16:2, s25:2, pixel9pro:1 } },
+      { e: '🍎', t: 'iOS — 아이폰 계속 쓸 것 같아',    s: { i17promax:4, i17:4 } },
+      { e: '🤖', t: 'Android — 갤럭시가 편해',          s: { s26ultra:3, s26:3, a56:1, zflip6:1 } },
+      { e: '🟢', t: 'Android — 순정 구글 폰이 좋아',    s: { pixel9pro:5 } },
+      { e: '🤷', t: '상관없어, 더 좋은 걸로',            s: { i17promax:2, s26ultra:2, pixel9pro:1 } },
     ],
   },
   {
-    emoji: '🎮',
-    text: '폰으로 게임을 얼마나 해요?',
+    emoji: '📐',
+    text: '화면 크기와 폼팩터는?',
     opts: [
-      { e: '🏆', t: '매일, 배그·롤 같은 무거운 게임도',   s: { s25ultra:4, iphone16promax:2 } },
-      { e: '🕹️', t: '가끔 캐주얼하게 즐김',               s: { s25:2, iphone16:2, pixel9pro:1 } },
-      { e: '📚', t: '거의 안 해',                           s: { a55:2, zflip6:1, pixel9pro:1 } },
-      { e: '🤦', t: '폰 게임은 별로, 콘솔·PC 파',          s: { iphone16:1, s25:1, a55:1 } },
+      { e: '🖥️', t: '클수록 좋아, 거의 태블릿 수준',   s: { s26ultra:4, i17promax:2 } },
+      { e: '📱', t: '적당한 6인치대 (표준)',             s: { i17:3, s26:3, pixel9pro:2 } },
+      { e: '✋', t: '작고 가벼워서 한 손 조작',           s: { zflip6:3, i17:2 } },
+      { e: '🦋', t: '폴더블처럼 특색 있는 디자인',       s: { zflip6:5 } },
     ],
   },
   {
-    emoji: '✨',
-    text: 'SNS에 주로 어떤 걸 올려요?',
+    emoji: '📷',
+    text: '카메라, 어느 수준을 원해요?',
     opts: [
-      { e: '🖼️', t: '사진 위주 (인스타 감성)',             s: { iphone16promax:2, pixel9pro:3, iphone16:1 } },
-      { e: '🎬', t: '릴스·쇼츠 영상 자주 올림',            s: { iphone16promax:4, s25ultra:2 } },
-      { e: '📝', t: '텍스트·링크 위주',                     s: { a55:2, s25:1, iphone16:1 } },
-      { e: '🔇', t: 'SNS 잘 안 씀',                         s: { a55:2, s25:1 } },
-    ],
-  },
-  {
-    emoji: '💼',
-    text: '폰으로 업무나 공부를 얼마나 해요?',
-    opts: [
-      { e: '🖊️', t: '문서 편집·이메일·PPT 자주 함',       s: { s25ultra:4, iphone16promax:1 } },
-      { e: '📋', t: '가끔 메모하거나 검색',                  s: { s25:2, iphone16:2, pixel9pro:1 } },
-      { e: '🎒', t: '학생, 강의 영상·필기 위주',             s: { s25ultra:2, iphone16promax:1, a55:1 } },
-      { e: '🏖️', t: '폰은 완전 여가용',                    s: { zflip6:2, a55:1, iphone16:1 } },
-    ],
-  },
-  {
-    emoji: '🌟',
-    text: '폰 고를 때 가장 중요한 건?',
-    opts: [
-      { e: '📸', t: '카메라 성능',                           s: { iphone16promax:4, pixel9pro:4 } },
-      { e: '⚡', t: '처리 속도·성능',                        s: { s25ultra:3, iphone16promax:2 } },
-      { e: '🔋', t: '배터리 수명',                           s: { a55:3, s25ultra:2, s25:1 } },
-      { e: '💅', t: '디자인·색상',                           s: { zflip6:4, iphone16:2, iphone16promax:1 } },
-    ],
-  },
-  {
-    emoji: '🎨',
-    text: '폰 디자인, 얼마나 신경 써요?',
-    opts: [
-      { e: '👑', t: '제일 중요해, 들고 다닐 때 예뻐야 해', s: { zflip6:4, iphone16promax:1, iphone16:2 } },
-      { e: '⚖️', t: '중요하긴 한데 성능이 우선',            s: { s25ultra:2, iphone16promax:2, pixel9pro:1 } },
-      { e: '🛠️', t: '성능이면 됨, 디자인은 별로',           s: { s25:2, a55:2 } },
-      { e: '📦', t: '케이스 씌우면 다 똑같지 않나',          s: { a55:2, s25:1 } },
-    ],
-  },
-  {
-    emoji: '🎵',
-    text: '음악이나 팟캐스트는 어떻게 들어요?',
-    opts: [
-      { e: '🎧', t: '블루투스 이어폰으로 매일 들음',        s: { iphone16promax:1, s25ultra:1, iphone16:1, s25:1 } },
-      { e: '🔌', t: '유선 이어폰 써서 이어폰잭 꼭 필요',   s: { a55:3, s25:1 } },
-      { e: '🔊', t: '스피커로 틀어놓는 편',                  s: { s25ultra:2, iphone16promax:1 } },
-      { e: '🔇', t: '잘 안 들음',                            s: { a55:1, zflip6:1 } },
-    ],
-  },
-  {
-    emoji: '💾',
-    text: '저장공간은 어떻게 쓰고 있어요?',
-    opts: [
-      { e: '😤', t: '항상 부족해, 사진만 수천 장',           s: { iphone16promax:3, s25ultra:3 } },
-      { e: '🤙', t: '적당히 써, 가끔 정리함',                s: { iphone16:2, s25:2, pixel9pro:1 } },
-      { e: '☁️', t: '클라우드 잘 써서 걱정 없음',            s: { a55:2, zflip6:1 } },
-      { e: '🗑️', t: '자주 비워서 항상 여유 있음',           s: { a55:2, iphone16:1 } },
+      { e: '🏆', t: '최고여야 해, 야경·줌·영상 모두',   s: { i17promax:5, pixel9pro:3 } },
+      { e: '✨', t: '좋으면 좋겠지만 최고급까지는 NO',    s: { i17:2, s26:2, pixel9pro:2, zflip6:1 } },
+      { e: '🤳', t: '셀카가 제일 중요해',                s: { zflip6:3, i17:2, s26:1 } },
+      { e: '😐', t: '카메라는 별로 안 중요해',            s: { a56:3, s26:1, s26ultra:1 } },
     ],
   },
   {
     emoji: '⚡',
-    text: '충전 방식, 뭐가 더 중요해요?',
+    text: '배터리 vs 성능, 뭐가 더 중요해요?',
     opts: [
-      { e: '🌀', t: '무선충전이 편해서 그냥 올려놓음',       s: { iphone16promax:2, iphone16:2, s25ultra:2, s25:2 } },
-      { e: '🚀', t: '속도! 빨리 충전되는 게 최고',           s: { s25ultra:3, s25:2, a55:1 } },
-      { e: '🐢', t: '충전 속도보다 오래 버티는 게 중요',     s: { a55:3, s25ultra:1, pixel9pro:1 } },
-      { e: '😐', t: '충전은 그냥 되면 돼',                   s: { iphone16:1, s25:1, a55:1 } },
+      { e: '🔋', t: '배터리! 하루 종일 버텨야 해',       s: { a56:4, s26ultra:2, s26:1 } },
+      { e: '🚀', t: '성능! 빠릿빠릿하게 뭐든 처리',      s: { s26ultra:4, i17promax:3 } },
+      { e: '⚖️', t: '둘 다 중요해 (플래그십급으로)',      s: { i17promax:3, s26ultra:3, s26:2, i17:2 } },
+      { e: '😐', t: '일반적인 수준이면 충분해',           s: { a56:3, s26:1, i17:1 } },
     ],
   },
   {
-    emoji: '🔮',
-    text: '마지막! 2년 뒤에도 이 폰, 빠릿빠릿했으면 해요?',
+    emoji: '🎨',
+    text: '2년 후에도 최신처럼 쓰고 싶어요?',
     opts: [
-      { e: '💪', t: '당연하지, 느려지면 못 참아',            s: { iphone16promax:3, s25ultra:3, pixel9pro:2 } },
-      { e: '🙂', t: '어느 정도 버텨주면 충분해',              s: { iphone16:2, s25:2, pixel9pro:1 } },
-      { e: '♻️', t: '2~3년마다 바꿀 것 같아',               s: { a55:2, zflip6:2, s25:1 } },
-      { e: '📅', t: '5년 이상 오래오래 쓸 거야',             s: { pixel9pro:3, iphone16promax:2, iphone16:1 } },
+      { e: '💪', t: '당연하지, 느려지면 참을 수 없어',   s: { i17promax:3, s26ultra:3, pixel9pro:3 } },
+      { e: '🙂', t: '어느 정도 버텨주면 충분해',          s: { i17:2, s26:2, pixel9pro:1 } },
+      { e: '♻️', t: '2~3년마다 교체할 것 같아',          s: { a56:3, zflip6:2 } },
+      { e: '📅', t: '5년 이상 오래오래 쓸 거야',          s: { pixel9pro:4, i17promax:2 } },
     ],
   },
 ];
 
-// ── STATE ────────────────────────────────────────────────────────────────────
+// ══ Phone mockup HTML per phone ══
+function getMockupInner(pmClass) {
+  switch(pmClass) {
+    case 'pm-i17promax':
+      return `<div class="pm-body"></div>
+              <div class="pm-screen"></div>
+              <div class="pm-cam-cluster">
+                <div class="cam-dot" style="position:absolute;top:3px;left:3px"></div>
+                <div class="cam-dot" style="position:absolute;bottom:3px;right:3px"></div>
+              </div>
+              <div class="pm-pill"></div>`;
+    case 'pm-i17':
+      return `<div class="pm-body"></div>
+              <div class="pm-screen"></div>
+              <div class="pm-cam2"></div>
+              <div class="pm-pill"></div>`;
+    case 'pm-s26u':
+      return `<div class="pm-body"></div>
+              <div class="pm-screen"></div>
+              <div class="pm-cam-strip" style="position:absolute;top:10px;left:50%;transform:translateX(-50%);width:26px;height:28px;background:rgba(0,0,0,.45);border-radius:8px;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:space-around;padding:4px">
+                <div class="cam-dot"></div>
+                <div class="cam-dot"></div>
+                <div class="cam-dot sm"></div>
+              </div>
+              <div class="pm-hole"></div>`;
+    case 'pm-s26':
+      return `<div class="pm-body"></div>
+              <div class="pm-screen"></div>
+              <div style="position:absolute;top:10px;left:50%;transform:translateX(-50%);width:22px;height:18px;background:rgba(0,0,0,.35);border-radius:7px;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:space-around;padding:3px">
+                <div class="cam-dot"></div>
+                <div class="cam-dot sm"></div>
+              </div>
+              <div class="pm-hole"></div>`;
+    case 'pm-pixel':
+      return `<div class="pm-body"></div>
+              <div class="pm-screen"></div>
+              <div class="pm-bar"></div>
+              <div class="pm-hole" style="top:9px"></div>`;
+    case 'pm-flip':
+      return `<div class="pm-body"></div>
+              <div class="pm-screen"></div>
+              <div class="pm-fold"></div>
+              <div class="pm-mini-screen"></div>
+              <div style="position:absolute;top:18px;right:9px;width:7px;height:7px;background:rgba(0,0,0,.4);border-radius:50%;z-index:3"></div>`;
+    case 'pm-a56':
+      return `<div class="pm-body"></div>
+              <div class="pm-screen"></div>
+              <div class="pm-cam3"></div>
+              <div class="pm-hole"></div>`;
+    default:
+      return `<div class="pm-body"></div><div class="pm-screen"></div>`;
+  }
+}
+
+// ══ STATE ══
 let curQ = 0;
 let answers = new Array(QS.length).fill(null);
 let scores  = {};
 PHONES.forEach(p => scores[p.id] = 0);
 
-// ── HELPERS ──────────────────────────────────────────────────────────────────
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('screen-' + id).classList.add('active');
   document.getElementById('progressWrap').style.display = id === 'quiz' ? 'block' : 'none';
 }
+function goHome() { restart(); return false; }
 
-function goHome() {
-  restart();
-  return false;
-}
-
-// ── QUIZ ─────────────────────────────────────────────────────────────────────
+// ══ QUIZ ══
 function startQuiz() {
-  curQ = 0;
-  answers.fill(null);
+  curQ = 0; answers.fill(null);
   PHONES.forEach(p => scores[p.id] = 0);
-  showScreen('quiz');
-  render();
+  showScreen('quiz'); render();
 }
 
 function render() {
@@ -778,97 +796,77 @@ function render() {
   q.opts.forEach((opt, i) => {
     const btn = document.createElement('button');
     btn.className = 'opt-btn' + (answers[curQ] === i ? ' selected' : '');
-    btn.innerHTML = `<span class="opt-emoji">${opt.e}</span><span>${opt.t}</span>`;
+    btn.innerHTML = `<span class="opt-e">${opt.e}</span><span>${opt.t}</span>`;
     btn.onclick = () => pick(i);
     box.appendChild(btn);
   });
 }
 
 function pick(i) {
-  // Undo previous answer for this question
   if (answers[curQ] !== null) {
-    const old = QS[curQ].opts[answers[curQ]].s;
-    Object.entries(old).forEach(([id, v]) => scores[id] -= v);
+    Object.entries(QS[curQ].opts[answers[curQ]].s).forEach(([id,v]) => scores[id] -= v);
   }
-  // Apply new answer
   answers[curQ] = i;
-  const ns = QS[curQ].opts[i].s;
-  Object.entries(ns).forEach(([id, v]) => scores[id] += v);
-
-  // Visual feedback
-  document.querySelectorAll('.opt-btn').forEach((b, idx) => {
-    b.classList.toggle('selected', idx === i);
-  });
-
-  setTimeout(() => {
-    if (curQ < QS.length - 1) { curQ++; render(); }
-    else { loading(); }
-  }, 260);
+  Object.entries(QS[curQ].opts[i].s).forEach(([id,v]) => scores[id] += v);
+  document.querySelectorAll('.opt-btn').forEach((b, idx) => b.classList.toggle('selected', idx === i));
+  setTimeout(() => { curQ < QS.length - 1 ? (curQ++, render()) : loading(); }, 260);
 }
 
-function prevQuestion() {
-  if (curQ > 0) { curQ--; render(); }
-}
+function prevQ() { if (curQ > 0) { curQ--; render(); } }
 
-// ── LOADING ───────────────────────────────────────────────────────────────────
-function loading() {
-  showScreen('loading');
-  setTimeout(showResult, 1600);
-}
+// ══ LOADING ══
+function loading() { showScreen('loading'); setTimeout(showResult, 1500); }
 
-// ── RESULT ────────────────────────────────────────────────────────────────────
+// ══ RESULT ══
 function showResult() {
-  const sorted = [...PHONES].sort((a, b) => scores[b.id] - scores[a.id]);
-  const top3   = sorted.slice(0, 3);
-  const best   = scores[top3[0].id];
+  const sorted = [...PHONES].sort((a,b) => scores[b.id] - scores[a.id]);
+  const top3   = sorted.slice(0,3);
+  const best   = scores[top3[0].id] || 1;
 
-  document.getElementById('resultTitle').textContent =
-    top3[0].name + ' 추천!';
+  document.getElementById('resultTitle').textContent = top3[0].name + ' 추천!';
 
   const container = document.getElementById('phoneCards');
   container.innerHTML = '';
-
-  const ranks  = ['🥇 BEST MATCH', '🥈 2순위', '🥉 3순위'];
-  const cls    = ['rank-1', 'rank-2', 'rank-3'];
+  const ranks = ['🥇 BEST MATCH','🥈 2순위','🥉 3순위'];
+  const cls   = ['rank-1','rank-2','rank-3'];
 
   top3.forEach((phone, i) => {
-    const pct  = best > 0 ? Math.round(scores[phone.id] / best * 100) : 0;
+    const pct  = Math.round(scores[phone.id] / best * 100);
     const card = document.createElement('div');
     card.className = `phone-card ${cls[i]}`;
+
     card.innerHTML = `
       <div class="rank-pill">${ranks[i]}</div>
-      <div class="card-top">
-        <div class="phone-icon">${phone.emoji}</div>
-        <div>
-          <div class="phone-name">${phone.name}</div>
+      <div class="card-body">
+        <div class="phone-mockup ${phone.pmClass}">${getMockupInner(phone.pmClass)}</div>
+        <div class="card-info">
+          <div class="phone-name">
+            ${phone.name}
+            ${phone.isNew ? '<span class="new-badge">NEW</span>' : ''}
+          </div>
           <div class="phone-price">${phone.price}</div>
+          <div class="match-row">
+            <div class="match-track">
+              <div class="match-fill" style="width:0%" data-w="${pct}%"></div>
+            </div>
+            <div class="match-pct">${pct}%</div>
+          </div>
+          <p class="phone-desc">${phone.desc}</p>
+          <div class="tags">${phone.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
         </div>
       </div>
-      <div class="match-row">
-        <div class="match-track">
-          <div class="match-fill" style="width:0%" data-w="${pct}%"></div>
-        </div>
-        <div class="match-pct">${pct}%</div>
-      </div>
-      <p class="phone-desc">${phone.desc}</p>
-      <div class="tags">${phone.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
     `;
     container.appendChild(card);
   });
 
   showScreen('result');
-
-  // Animate match bars
   requestAnimationFrame(() => requestAnimationFrame(() => {
-    document.querySelectorAll('.match-fill').forEach(el => {
-      el.style.width = el.dataset.w;
-    });
+    document.querySelectorAll('.match-fill').forEach(el => el.style.width = el.dataset.w);
   }));
 }
 
 function restart() {
-  curQ = 0;
-  answers.fill(null);
+  curQ = 0; answers.fill(null);
   PHONES.forEach(p => scores[p.id] = 0);
   showScreen('landing');
 }
