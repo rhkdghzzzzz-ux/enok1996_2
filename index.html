@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>내 폰 추천 테스트 | KT</title>
+  <title>내 폰 찾기 | KT</title>
   <!-- AdSense: <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXX" crossorigin="anonymous"></script> -->
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -36,15 +36,19 @@
       border-bottom: 1px solid var(--border);
       position: relative;
     }
-    .logo { font-size: 0.95rem; font-weight: 800; color: var(--text); text-decoration: none; letter-spacing: -0.3px; }
-    .logo span { color: var(--accent); }
+    .logo {
+      font-size: 1rem; font-weight: 900; text-decoration: none; letter-spacing: -0.5px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .logo .dot { -webkit-text-fill-color: #FF6B9D; color: #FF6B9D; }
 
     /* ── Progress ── */
-    #progressWrap { flex-shrink: 0; height: 4px; background: var(--sf2); display: none; }
+    #progressWrap { flex-shrink: 0; height: 5px; background: var(--sf2); display: none; }
     #progressFill {
       height: 100%;
-      background: linear-gradient(90deg, var(--accent) 0%, var(--accent2) 100%);
-      border-radius: 0 2px 2px 0;
+      background: linear-gradient(90deg, #0066CC 0%, #5E5CE6 50%, #FF6B9D 100%);
+      border-radius: 0 3px 3px 0;
       transition: width .4s cubic-bezier(.4,0,.2,1);
     }
 
@@ -74,11 +78,11 @@
     }
     .landing-badge {
       display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(0,102,204,.08);
-      border: 1px solid rgba(0,102,204,.18);
-      color: var(--accent);
+      background: linear-gradient(135deg, rgba(0,102,204,.1), rgba(255,107,157,.1));
+      border: 1px solid rgba(94,92,230,.25);
+      color: var(--accent2);
       font-size: 0.75rem; font-weight: 700;
-      padding: 5px 14px; border-radius: 999px;
+      padding: 6px 16px; border-radius: 999px;
       margin-bottom: 20px; letter-spacing: .04em;
       position: relative; z-index: 1;
     }
@@ -120,25 +124,35 @@
     }
     .btn-back:hover { color: var(--text); }
     .q-counter { font-size: 0.8rem; color: var(--muted); font-weight: 600; }
-    .q-emoji { font-size: 2rem; margin-bottom: 10px; display: block; }
+    .q-emoji {
+      font-size: 2.2rem; margin-bottom: 10px; display: inline-block;
+      background: linear-gradient(135deg, var(--sf), var(--sf2));
+      width: 52px; height: 52px; border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+    }
     .q-text { font-size: clamp(1.15rem,3vw,1.42rem); font-weight: 800; letter-spacing: -.5px; line-height: 1.35; margin-bottom: 22px; }
     .options { display: flex; flex-direction: column; gap: 9px; }
     .opt-btn {
       display: flex; align-items: center; gap: 13px;
-      padding: 15px 17px;
-      background: var(--sf); border: 2px solid transparent; border-radius: var(--r);
+      padding: 15px 20px;
+      background: var(--sf); border: 2px solid transparent; border-radius: 999px;
       cursor: pointer; text-align: left;
-      font-size: 0.92rem; font-weight: 500; color: var(--text);
+      font-size: 0.92rem; font-weight: 600; color: var(--text);
       font-family: var(--font); width: 100%;
-      transition: border-color .15s, background .15s, transform .12s, box-shadow .15s;
+      transition: border-color .18s, background .18s, transform .15s, box-shadow .18s;
     }
     .opt-btn:hover {
-      border-color: var(--accent); background: rgba(0,102,204,.05);
-      transform: translateX(3px); box-shadow: -3px 0 0 var(--accent);
+      border-color: var(--accent2);
+      background: linear-gradient(135deg, rgba(0,102,204,.05), rgba(94,92,230,.05));
+      transform: scale(1.02);
+      box-shadow: 0 4px 16px rgba(94,92,230,.12);
     }
     .opt-btn.selected {
-      border-color: var(--accent); background: rgba(0,102,204,.07);
-      transform: translateX(3px); box-shadow: -3px 0 0 var(--accent);
+      border-color: var(--accent);
+      background: linear-gradient(135deg, rgba(0,102,204,.08), rgba(94,92,230,.08));
+      transform: scale(1.02);
+      box-shadow: 0 4px 16px rgba(0,102,204,.15);
     }
     .opt-e { font-size: 1.25rem; flex-shrink: 0; line-height: 1; }
 
@@ -257,7 +271,7 @@
 <body>
 
 <header>
-  <a href="#" class="logo" onclick="return goHome()">내 폰 추천<span>.</span></a>
+  <a href="#" class="logo" onclick="return goHome()">🔍 내 폰 찾기<span class="dot">.</span></a>
 </header>
 
 <div id="progressWrap"><div id="progressFill" style="width:0%"></div></div>
@@ -265,7 +279,7 @@
 <!-- ── LANDING ── -->
 <div class="screen active" id="screen-landing">
   <div class="landing-badge">✦ 2025–2026 최신 라인업</div>
-  <h1 class="landing-title">나에게 딱 맞는<br><em>폰</em> 찾기</h1>
+  <h1 class="landing-title">나에게 딱 맞는<br><em>폰</em> 찾기 🔍</h1>
   <p class="landing-sub">7가지 질문으로 취향과 라이프스타일을 분석해<br>최적의 스마트폰을 추천해드려요.</p>
   <button class="btn-primary" onclick="startQuiz()">
     테스트 시작하기
@@ -672,17 +686,17 @@ const QS = [
   {
     emoji: '🎯', text: '폰으로 가장 많이 하는 것은?',
     opts: [
-      { e:'📸', t:'사진·영상 촬영 및 편집',        s:{ i17pro:4, s26ultra:3, xiaomi15:2 } },
-      { e:'🎮', t:'모바일 게임 (진지하게)',          s:{ s26ultra:4, xiaomi15:3, s25fe:2 } },
-      { e:'💼', t:'업무·문서·이메일',               s:{ s26ultra:4, i17pro:2, i17air:1 } },
-      { e:'💬', t:'SNS·유튜브·일상 콘텐츠',         s:{ zflip7:3, i17air:2, s25fe:2, moto_edge50:1 } },
+      { e:'📸', t:'사진·영상 촬영 및 편집',        s:{ i17pro:5, xiaomi15:3 } },
+      { e:'🎮', t:'모바일 게임 (진지하게)',          s:{ s26ultra:5, xiaomi15:2, s25fe:1 } },
+      { e:'💼', t:'업무·문서·이메일',               s:{ s26ultra:3, i17pro:3, i17air:1 } },
+      { e:'💬', t:'SNS·유튜브·일상 콘텐츠',         s:{ zflip7:4, i17air:3, s25fe:2, moto_edge50:1 } },
     ],
   },
   {
     emoji: '💰', text: '솔직한 예산은?',
     opts: [
-      { e:'💎', t:'상관없어, 무조건 최고로',          s:{ s26ultra:5, i17pro:4 } },
-      { e:'💳', t:'120~180만원 사이 플래그십',         s:{ i17pro:3, i17air:3, zflip7:3, s26ultra:2 } },
+      { e:'💎', t:'상관없어, 무조건 최고로',          s:{ s26ultra:5, i17pro:5 } },
+      { e:'💳', t:'120~180만원 사이 플래그십',         s:{ i17pro:4, i17air:3, zflip7:3, s26ultra:2 } },
       { e:'🧾', t:'70~120만원 사이',                  s:{ s25fe:4, xiaomi15:4, moto_edge50:3 } },
       { e:'🏷️', t:'최대한 저렴하게 (70만원대)',        s:{ moto_edge50:4, xiaomi15:3, s25fe:2 } },
     ],
@@ -691,45 +705,45 @@ const QS = [
     emoji: '🍎', text: '운영체제 취향은?',
     opts: [
       { e:'🍎', t:'iOS — 아이폰 계속 쓸 것 같아',     s:{ i17pro:5, i17air:5 } },
-      { e:'🔷', t:'Android — 삼성 갤럭시가 편해',      s:{ s26ultra:4, zflip7:3, s25fe:3 } },
-      { e:'🌐', t:'Android — 삼성 말고 다른 브랜드',   s:{ xiaomi15:4, moto_edge50:4 } },
-      { e:'🤷', t:'상관없어, 더 좋은 걸로',             s:{ s26ultra:2, i17pro:2, xiaomi15:1, moto_edge50:1 } },
+      { e:'🔷', t:'Android — 삼성 갤럭시가 편해',      s:{ s26ultra:5, zflip7:3, s25fe:3 } },
+      { e:'🌐', t:'Android — 삼성 말고 다른 브랜드',   s:{ xiaomi15:5, moto_edge50:5 } },
+      { e:'🤷', t:'상관없어, 뭐든 좋아',               s:{ i17pro:1, s26ultra:1, xiaomi15:1, zflip7:1 } },
     ],
   },
   {
     emoji: '📐', text: '화면 크기와 폼팩터는?',
     opts: [
-      { e:'🖥️', t:'클수록 좋아, 거의 태블릿',          s:{ s26ultra:5, s25fe:2 } },
-      { e:'📱', t:'표준 사이즈 (6~6.5인치)',             s:{ i17pro:3, i17air:2, xiaomi15:2, moto_edge50:2 } },
-      { e:'✋', t:'작고 가벼워야 해',                    s:{ i17air:3, zflip7:3 } },
-      { e:'🦋', t:'폴더블 — 개성 있는 디자인',           s:{ zflip7:5 } },
+      { e:'🖥️', t:'클수록 좋아, 거의 태블릿',          s:{ s26ultra:5, s25fe:1 } },
+      { e:'📱', t:'표준 사이즈 (6~6.5인치)',             s:{ i17pro:4, i17air:2, xiaomi15:3, moto_edge50:2 } },
+      { e:'✋', t:'작고 가벼워야 해',                    s:{ i17air:4, zflip7:3 } },
+      { e:'🦋', t:'폴더블 — 개성 있는 디자인',           s:{ zflip7:5, i17air:1 } },
     ],
   },
   {
     emoji: '📷', text: '카메라 수준, 어느 정도 필요해요?',
     opts: [
-      { e:'🏆', t:'최고여야 해, 야경·줌·영상 모두',      s:{ i17pro:5, s26ultra:3, xiaomi15:2 } },
-      { e:'✨', t:'좋으면 좋겠지만 최고급은 필요 없어',   s:{ s25fe:3, moto_edge50:3, i17air:2 } },
-      { e:'🤳', t:'셀카가 제일 중요해',                  s:{ zflip7:4, i17air:2, s25fe:1 } },
-      { e:'😐', t:'카메라는 별로 안 중요해',              s:{ s25fe:2, moto_edge50:2, s26ultra:1 } },
+      { e:'🏆', t:'최고여야 해, 야경·줌·영상 모두',      s:{ i17pro:5, xiaomi15:4, s26ultra:1 } },
+      { e:'✨', t:'좋으면 좋겠지만 최고급은 필요 없어',   s:{ s25fe:3, moto_edge50:3, zflip7:1, i17air:2 } },
+      { e:'🤳', t:'셀카가 제일 중요해',                  s:{ zflip7:4, i17air:3, s25fe:1 } },
+      { e:'😐', t:'카메라는 별로 안 중요해',              s:{ s25fe:3, moto_edge50:3 } },
     ],
   },
   {
     emoji: '⚡', text: '배터리 vs 성능, 더 중요한 건?',
     opts: [
-      { e:'🔋', t:'배터리! 하루 종일 버텨야 해',         s:{ s25fe:4, xiaomi15:3, s26ultra:1 } },
-      { e:'🚀', t:'성능! 빠릿빠릿하게 처리되어야 해',     s:{ s26ultra:4, i17pro:3, xiaomi15:2 } },
-      { e:'⚖️', t:'둘 다 중요해 (최상급으로)',            s:{ s26ultra:4, i17pro:3, i17air:2 } },
-      { e:'🔌', t:'어느 정도면 충분, 충전 빠른 게 낫겠어', s:{ moto_edge50:4, xiaomi15:2, s25fe:2 } },
+      { e:'🔋', t:'배터리! 하루 종일 버텨야 해',         s:{ s25fe:4, xiaomi15:4, moto_edge50:2 } },
+      { e:'🚀', t:'성능! 빠릿빠릿하게 처리되어야 해',     s:{ s26ultra:4, i17pro:4, xiaomi15:1 } },
+      { e:'⚖️', t:'둘 다 중요해 (최상급으로)',            s:{ s26ultra:3, i17pro:3, i17air:2, xiaomi15:1 } },
+      { e:'🔌', t:'충전 빠른 게 더 중요해',               s:{ moto_edge50:5, xiaomi15:2, s25fe:1 } },
     ],
   },
   {
     emoji: '🔮', text: '2~3년 후에도 최신처럼 쓰고 싶어요?',
     opts: [
-      { e:'💪', t:'당연하지, 느려지면 참을 수 없어',      s:{ i17pro:3, s26ultra:3, xiaomi15:2 } },
-      { e:'🙂', t:'어느 정도 버텨주면 충분해',             s:{ i17air:2, s25fe:2, moto_edge50:2 } },
-      { e:'♻️', t:'2~3년마다 어차피 교체할 것 같아',      s:{ zflip7:3, s25fe:2, moto_edge50:2 } },
-      { e:'📅', t:'5년 이상 오래오래 쓸 거야',             s:{ i17pro:4, s26ultra:2, xiaomi15:1 } },
+      { e:'💪', t:'당연하지, 느려지면 참을 수 없어',      s:{ i17pro:4, s26ultra:3, xiaomi15:1 } },
+      { e:'🙂', t:'어느 정도 버텨주면 충분해',             s:{ i17air:3, s25fe:2, moto_edge50:2 } },
+      { e:'♻️', t:'2~3년마다 어차피 교체할 것 같아',      s:{ zflip7:4, s25fe:2, moto_edge50:2 } },
+      { e:'📅', t:'5년 이상 오래오래 쓸 거야',             s:{ i17pro:4, xiaomi15:3, s26ultra:1 } },
     ],
   },
 ];
